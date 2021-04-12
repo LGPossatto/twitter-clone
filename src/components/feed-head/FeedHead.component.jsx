@@ -1,8 +1,8 @@
 import "./feedHead.style.scss";
-import headImg from "../assets/images/placeholder.png";
-import Btn from "../components/btn/Btn.component";
-import IconInfo from "../components/icon-info/IconInfo.component";
-import FollowNumberLink from "../components/follow-number-link/FollowNumberLink.component";
+import headImg from "../../assets/images/placeholder.png";
+import Btn from "../../components/btn/Btn.component";
+import IconInfo from "../../components/icon-info/IconInfo.component";
+import FollowNumberLink from "../../components/follow-number-link/FollowNumberLink.component";
 
 const FeedHead = () => {
   return (

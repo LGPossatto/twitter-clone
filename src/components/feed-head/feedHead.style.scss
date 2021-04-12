@@ -1,4 +1,4 @@
-@import "../assets/styles/variables.style.scss";
+@import "../../assets/styles/variables.style.scss";
 
 .feed-head {
   width: 100%;
@@ -17,6 +17,7 @@
     position: relative;
     width: 100%;
     padding: 0 12px;
+    margin-bottom: 12px;
 
     &__img {
       overflow: hidden;

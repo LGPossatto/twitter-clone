@@ -1,0 +1,37 @@
+@import "../../assets/styles/variables.style.scss";
+
+.tweet-btn {
+  i {
+    margin-right: 4px;
+  }
+}
+
+.reply {
+  &:hover {
+    color: $primary-color;
+
+    i {
+      color: $primary-color;
+    }
+  }
+}
+
+.retweets {
+  &:hover {
+    color: $success-color;
+
+    i {
+      color: $success-color;
+    }
+  }
+}
+
+.likes {
+  &:hover {
+    color: $danger-color;
+
+    i {
+      color: $danger-color;
+    }
+  }
+}

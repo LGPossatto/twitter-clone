@@ -1,0 +1,41 @@
+@import "../../assets/styles/variables.style.scss";
+
+.tweet {
+  padding: 12px;
+
+  border: 1px solid $secondary-color-dark;
+
+  .img-box {
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    margin-right: 12px;
+
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+    .tweet-top {
+      span {
+        font-weight: 400;
+      }
+
+      i {
+        cursor: pointer;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+
+    .msg {
+      margin: 6px 0;
+    }
+  }
+}

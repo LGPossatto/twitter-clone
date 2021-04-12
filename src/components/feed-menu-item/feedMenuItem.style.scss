@@ -1,0 +1,19 @@
+@import "../../assets/styles/variables.style.scss";
+
+.feed-menu-item {
+  padding: 12px;
+  flex-grow: 1;
+
+  text-align: center;
+  font-weight: 700;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+}
+
+.active {
+  color: $primary-color;
+
+  border-bottom: 1px solid $primary-color;
+}
