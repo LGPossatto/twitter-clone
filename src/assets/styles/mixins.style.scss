@@ -1,0 +1,41 @@
+@import "./variables.style.scss";
+
+//-----------------------------------------------------------------//
+//-------------------------- BREAKPOINTS --------------------------//
+//-----------------------------------------------------------------//
+
+@mixin bp-big {
+  @media (max-width: $ss-big) {
+    @content;
+  }
+}
+
+@mixin bp-med {
+  @media (max-width: $ss-med) {
+    @content;
+  }
+}
+
+@mixin bp-small {
+  @media (max-width: $ss-small) {
+    @content;
+  }
+}
+
+@mixin bp-tablet {
+  @media (max-width: $ss-tablet) {
+    @content;
+  }
+}
+
+@mixin bp-tablet-min {
+  @media (min-width: $ss-tablet + 1) {
+    @content;
+  }
+}
+
+@mixin bp-mobile {
+  @media (max-width: $ss-mobile) {
+    @content;
+  }
+}
