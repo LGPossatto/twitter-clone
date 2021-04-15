@@ -13,7 +13,7 @@ const Tweet = () => {
           <h2 className="fs-med">
             Name <span className="fc-secondary">@login - Apr 8</span>
           </h2>
-          <i class="fas fa-ellipsis-h fs-med fc-secondary"></i>
+          <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
         </div>
         <p className="fs-med msg">
           Vitae veritatis consequatur iure ipsa amet maxime aliquam dolorum.

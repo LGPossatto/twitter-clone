@@ -1,0 +1,13 @@
+@import "../../assets/styles/mixins.style.scss";
+
+.main {
+  max-width: 990px;
+
+  @include bp-small {
+    flex-grow: 2;
+  }
+
+  @include bp-tablet {
+    width: 100%;
+  }
+}

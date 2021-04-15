@@ -1,9 +1,10 @@
 @import "../../assets/styles/mixins.style.scss";
 
-.menu-box {
+.extra-content {
+  width: 350px;
+  margin-right: 10px;
+
   @include bp-small {
-    display: flex;
-    flex-grow: 1;
-    justify-content: right;
+    display: none;
   }
 }

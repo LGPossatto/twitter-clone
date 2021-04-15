@@ -1,0 +1,15 @@
+@import "../../assets/styles/variables.style.scss";
+
+.side-card {
+  background-color: $bg-color;
+  width: 100%;
+  margin: 12px;
+  padding-bottom: 16px;
+
+  border-radius: 2rem;
+
+  & > h2 {
+    padding: 12px;
+    border-bottom: 1px solid $secondary-color-dark;
+  }
+}

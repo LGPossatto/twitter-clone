@@ -1,8 +1,13 @@
 @import "../../assets/styles/variables.style.scss";
+@import "../../assets/styles/mixins.style.scss";
 
 .feed {
   width: 600px;
 
   border-left: 1px solid $secondary-color-dark;
   border-right: 1px solid $secondary-color-dark;
+
+  @include bp-tablet {
+    width: 100%;
+  }
 }

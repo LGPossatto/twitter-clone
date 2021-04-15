@@ -1,0 +1,63 @@
+import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+
+import "./loginInput.style.scss";
+
+const LoginInput = ({ inputName, type, ctrlClass }) => {
+  const [value, setValue] = useState("");
+  const [active, setActive] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleClick = (e) => {
+    if (
+      e.target.classList.contains(ctrlClass) &&
+      (e.target.classList.contains("login-input") ||
+        e.target.classList.contains("label") ||
+        e.target.classList.contains("input"))
+    ) {
+      setActive(true);
+    } else if (value === "") {
+      setActive(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
+
+  return (
+    <div
+      className={`login-input ${ctrlClass} ${active ? "active" : ""}`}
+      onClick={() => inputRef.current.focus()}
+    >
+      <label
+        htmlFor={inputName}
+        className={`label fs-med fc-secondary ${ctrlClass}`}
+        onClick={() => inputRef.current.focus()}
+      >
+        {inputName}
+      </label>
+      <input
+        className={`input fs-med ${ctrlClass}`}
+        name={inputName}
+        type={type}
+        value={value}
+        ref={inputRef}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+      />
+    </div>
+  );
+};
+
+LoginInput.propTypes = {
+  inputName: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  ctrlClass: PropTypes.string.isRequired,
+};
+
+export default LoginInput;

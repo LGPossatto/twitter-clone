@@ -6,7 +6,7 @@ import "./tweetBtn.style.scss";
 const TweetBtn = ({ url, type, icon }) => {
   return (
     <Link to={url} className={`tweet-btn fs-med fc-secondary ${type}`}>
-      <i class={`fs-med fc-secondary ${icon}`}></i>
+      <i className={`fs-med fc-secondary ${icon}`}></i>
       25.7K
     </Link>
   );
