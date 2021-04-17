@@ -1,0 +1,49 @@
+@import "../../assets/styles/variables.style.scss";
+
+.text-box {
+  padding: 12px;
+
+  border-bottom: 1px solid $secondary-color-dark;
+
+  .img-box {
+    overflow: hidden;
+    flex-shrink: 0;
+
+    width: 45px;
+    height: 45px;
+    margin-right: 12px;
+
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .tweet-box {
+    flex-grow: 1;
+
+    textarea {
+      display: block;
+
+      background: transparent;
+      width: 100%;
+      height: 75px;
+
+      border: none;
+      resize: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    a {
+      position: relative;
+      right: calc(-100% + 12px);
+      width: max-content;
+      transform: translateX(-100%);
+    }
+  }
+}

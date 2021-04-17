@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import "./loginInput.style.scss";
 
-const LoginInput = ({ inputName, type, ctrlClass }) => {
-  const [value, setValue] = useState("");
+const LoginInput = ({ state, setState, inputName, type, ctrlClass }) => {
   const [active, setActive] = useState(false);
   const inputRef = useRef(null);
 
@@ -16,7 +15,7 @@ const LoginInput = ({ inputName, type, ctrlClass }) => {
         e.target.classList.contains("input"))
     ) {
       setActive(true);
-    } else if (value === "") {
+    } else if (inputRef.current.value === "") {
       setActive(false);
     }
   };
@@ -44,10 +43,10 @@ const LoginInput = ({ inputName, type, ctrlClass }) => {
         className={`input fs-med ${ctrlClass}`}
         name={inputName}
         type={type}
-        value={value}
+        value={state}
         ref={inputRef}
         onChange={(e) => {
-          setValue(e.target.value);
+          setState(e.target.value);
         }}
       />
     </div>
@@ -55,6 +54,8 @@ const LoginInput = ({ inputName, type, ctrlClass }) => {
 };
 
 LoginInput.propTypes = {
+  state: PropTypes.string.isRequired,
+  setState: PropTypes.func.isRequired,
   inputName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   ctrlClass: PropTypes.string.isRequired,

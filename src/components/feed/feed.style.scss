@@ -7,6 +7,11 @@
   border-left: 1px solid $secondary-color-dark;
   border-right: 1px solid $secondary-color-dark;
 
+  &__title {
+    padding: 12px;
+    border-bottom: 1px solid $secondary-color-dark;
+  }
+
   @include bp-tablet {
     width: 100%;
   }

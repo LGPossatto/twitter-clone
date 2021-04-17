@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import firebase from "firebase";
 
+import UserState from "./context/user/userState";
+
 var firebaseConfig = {
   apiKey: "AIzaSyB8yLiHy0KPTtreHwFmH1Z1RWcKkGDmoM8",
   authDomain: "twitter-clone-29260.firebaseapp.com",
@@ -16,8 +18,10 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <UserState>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </UserState>,
   document.getElementById("root")
 );

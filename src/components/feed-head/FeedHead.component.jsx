@@ -14,7 +14,7 @@ const FeedHead = () => {
         <div className="profile__img">
           <img src={headImg} alt="profile" />
         </div>
-        <Btn url="#!" text="Follow" no_bg></Btn>
+        <Btn url="#!" text="Follow" no_bg med></Btn>
         <div className="profile__info">
           <h2 className="fs-big">Name</h2>
           <span className="fs-med fc-secondary">@login</span>

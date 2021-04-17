@@ -3,7 +3,12 @@
   width: 100vw;
   height: 100vh;
 
-  &__form {
-    width: 350px;
+  span {
+    cursor: pointer;
+    display: block;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

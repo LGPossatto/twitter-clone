@@ -3,10 +3,12 @@
 .tweet {
   padding: 12px;
 
-  border: 1px solid $secondary-color-dark;
+  border-bottom: 1px solid $secondary-color-dark;
 
   .img-box {
     overflow: hidden;
+    flex-shrink: 0;
+
     width: 45px;
     height: 45px;
     margin-right: 12px;
