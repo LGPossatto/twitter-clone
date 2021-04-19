@@ -5,6 +5,7 @@ import firebase from "firebase";
 
 import UserState from "./context/user/userState";
 
+// Initialize Firebase
 var firebaseConfig = {
   apiKey: "AIzaSyB8yLiHy0KPTtreHwFmH1Z1RWcKkGDmoM8",
   authDomain: "twitter-clone-29260.firebaseapp.com",
@@ -14,7 +15,6 @@ var firebaseConfig = {
   appId: "1:682483840458:web:095e20f9b5d9584f280b33",
   measurementId: "G-Y332HG4NZP",
 };
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(

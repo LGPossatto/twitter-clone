@@ -10,10 +10,18 @@ const Login = () => {
 
   const [signIn, setSignIn] = useState(false);
 
+  // login to accoutn
   const [logInEmail, setLogInEmail] = useState("");
   const [logInPassword, setLogInPassword] = useState("");
+
+  // create new account
   const [signInEmail, setSignInEmail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userBio, setUserBio] = useState("");
+  const [userBd, setUserBd] = useState("");
+  const [userLink, setUserLink] = useState("");
+  const [userCity, setUserCity] = useState("");
 
   return (
     <div className="login flex flex-fd-c flex-fw-w jc-c ai-c">
@@ -26,6 +34,12 @@ const Login = () => {
           setEmailState={setLogInEmail}
           passwordState={logInPassword}
           setPasswordState={setLogInPassword}
+          profileInfo={[
+            [userName, setUserName, "Name"],
+            [userBio, setUserBio, "Say something about you"],
+            [userBd, setUserBd, "Birthday (dd/mm/yyyy)"],
+            [userCity, setUserCity, "What city are you in right now?"],
+          ]}
         ></Form>
       ) : (
         <Form

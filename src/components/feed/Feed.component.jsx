@@ -12,7 +12,7 @@ const Feed = () => {
 
   return (
     <div className="feed">
-      {user ? (
+      {!user ? (
         <>
           <h2 className="feed__title fs-big">Home</h2>
           <TextBox></TextBox>

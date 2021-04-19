@@ -11,6 +11,7 @@ const Form = ({
   setEmailState,
   passwordState,
   setPasswordState,
+  profileInfo,
 }) => {
   return (
     <form className="form">
@@ -29,12 +30,29 @@ const Form = ({
         type="password"
         ctrlClass="password"
       ></LoginInput>
+      {profileInfo &&
+        profileInfo.map((item) => {
+          return (
+            <LoginInput
+              key={item[2]}
+              state={item[0]}
+              setState={item[1]}
+              inputName={item[2]}
+              type="text"
+              ctrlClass={item[2].slice(0, 3)}
+            ></LoginInput>
+          );
+        })}
       <input
         type="button"
         value={btnText}
         className={"form__btn"}
         onClick={() => {
-          onSubmit(emailState, passwordState);
+          if (profileInfo) {
+            onSubmit(emailState, passwordState, profileInfo);
+          } else {
+            onSubmit(emailState, passwordState);
+          }
         }}
       />
     </form>
@@ -49,6 +67,7 @@ Form.proppTypes = {
   setEmailState: PropTypes.string.isRequired,
   passwordState: PropTypes.string.isRequired,
   setPasswordState: PropTypes.string.isRequired,
+  profileInfo: PropTypes.array,
 };
 
 export default Form;
