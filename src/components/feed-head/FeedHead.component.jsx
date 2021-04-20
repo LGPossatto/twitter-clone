@@ -1,10 +1,14 @@
+import PropTypes from "prop-types";
+
 import "./feedHead.style.scss";
 import headImg from "../../assets/images/placeholder.png";
 import Btn from "../../components/btn/Btn.component";
 import IconInfo from "../../components/icon-info/IconInfo.component";
 import FollowNumberLink from "../../components/follow-number-link/FollowNumberLink.component";
 
-const FeedHead = () => {
+const FeedHead = ({
+  user: { name, email, bio, birthday, location, accountBd },
+}) => {
   return (
     <div className="feed-head">
       <div className="head-img">
@@ -16,28 +20,13 @@ const FeedHead = () => {
         </div>
         <Btn url="#!" text="Follow" no_bg med></Btn>
         <div className="profile__info">
-          <h2 className="fs-big">Name</h2>
-          <span className="fs-med fc-secondary">@login</span>
-          <p className="fs-med bio">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt
-            ea itaque quam est sed, explicabo temporibus mollitia facilis
-            aliquid accusamus asperiores ad magnam corrupti ducimus!
-          </p>
+          <h2 className="fs-big">{name}</h2>
+          <span className="fs-med fc-secondary">{email}</span>
+          <p className="fs-med bio">{bio}</p>
           <div className="more-info flex flex-fw-w">
-            <IconInfo icon="fas fa-map-marker-alt" text="everywhere"></IconInfo>
-            <IconInfo
-              icon="fas fa-link"
-              text="about.twitter.com"
-              url="#!"
-            ></IconInfo>
-            <IconInfo
-              icon="fas fa-birthday-cake"
-              text="Born March 21"
-            ></IconInfo>
-            <IconInfo
-              icon="fas fa-calendar-alt"
-              text="Joined February 2007"
-            ></IconInfo>
+            <IconInfo icon="fas fa-map-marker-alt" text={location}></IconInfo>
+            <IconInfo icon="fas fa-birthday-cake" text={birthday}></IconInfo>
+            <IconInfo icon="fas fa-calendar-alt" text={accountBd}></IconInfo>
           </div>
           <div className="follow-numbers">
             <FollowNumberLink
@@ -55,6 +44,10 @@ const FeedHead = () => {
       </div>
     </div>
   );
+};
+
+FeedHead.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default FeedHead;

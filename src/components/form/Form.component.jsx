@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 import "./form.style.scss";
-import LoginInput from "../input/LoginInput.component";
+import LoginInput from "../login-input/LoginInput.component";
 
 const Form = ({
   title,

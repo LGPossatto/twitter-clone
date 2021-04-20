@@ -20,7 +20,6 @@ const Login = () => {
   const [userName, setUserName] = useState("");
   const [userBio, setUserBio] = useState("");
   const [userBd, setUserBd] = useState("");
-  const [userLink, setUserLink] = useState("");
   const [userCity, setUserCity] = useState("");
 
   return (

@@ -19,7 +19,7 @@ const Feed = () => {
         </>
       ) : (
         <>
-          <FeedHead></FeedHead>
+          <FeedHead user={user}></FeedHead>
           <div className="feed__menu flex jc-sb">
             <FeedMenuItem url="#!" text="Tweets" active></FeedMenuItem>
             <FeedMenuItem url="#!" text="Replies"></FeedMenuItem>

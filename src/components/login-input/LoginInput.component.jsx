@@ -25,6 +25,7 @@ const LoginInput = ({ state, setState, inputName, type, ctrlClass }) => {
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

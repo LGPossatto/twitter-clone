@@ -1,12 +1,12 @@
-import { CREATE_ACCOUNT, LOG_IN_WITH_EMAIL, CREATE_USER_DB } from "../types";
+import {
+  GET_USER_INFO,
+  GET_USER_FOLLOWERS,
+  GET_USER_FOLLOWING,
+} from "../types";
 
 const userReducer = (state, action) => {
   switch (action.type) {
-    case LOG_IN_WITH_EMAIL:
-      return { ...state, user: action.payload };
-    case CREATE_ACCOUNT:
-      return { ...state, user: action.payload };
-    case CREATE_USER_DB:
+    case GET_USER_INFO:
       return {
         ...state,
         user: {
@@ -15,8 +15,13 @@ const userReducer = (state, action) => {
           bio: action.payload.bio,
           birthday: action.payload.birthday,
           location: action.payload.location,
+          accountBd: action.payload.accountBd,
         },
       };
+    case GET_USER_FOLLOWERS:
+      return { ...state, followers: action.payload };
+    case GET_USER_FOLLOWING:
+      return { ...state, followers: action.payload };
     default:
       return state;
   }
