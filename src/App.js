@@ -8,11 +8,11 @@ import Home from "./pages/home/Home.page";
 import Login from "./pages/login/Login.page";
 
 function App() {
-  const { user } = useContext(UserContext);
+  const { user, followers, following } = useContext(UserContext);
 
   return (
     <BrowserRouter>
-      {user ? (
+      {user && followers && following ? (
         <Switch>
           <Route component={Home}></Route>
         </Switch>

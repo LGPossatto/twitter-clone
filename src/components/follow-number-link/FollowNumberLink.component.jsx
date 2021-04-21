@@ -15,7 +15,7 @@ const FollowNumberLink = ({ number, text, url }) => {
 };
 
 FollowNumberLink.propTypes = {
-  number: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
 };

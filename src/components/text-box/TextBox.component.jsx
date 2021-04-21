@@ -1,11 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { useState, useContext } from "react";
+import UserContext from "../../context/user/userContext";
 
 import "./textBox.style.scss";
 import profileImg from "../../assets/images/placeholder.png";
 import Btn from "../btn/Btn.component";
 
-const TextBox = (props) => {
+const TextBox = () => {
+  const [message, setMessage] = useState("");
+  const { postTweet } = useContext(UserContext);
+
   return (
     <div className="text-box flex">
       <div className="img-box">
@@ -15,14 +18,21 @@ const TextBox = (props) => {
         <textarea
           className="fs-med"
           name="tweet"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="What is happening..."
         ></textarea>
-        <Btn med block url="#!" text="Tweet"></Btn>
+        <Btn
+          med
+          block
+          url="#!"
+          text="Tweet"
+          onClick={postTweet}
+          message={message}
+        ></Btn>
       </div>
     </div>
   );
 };
-
-TextBox.propTypes = {};
 
 export default TextBox;

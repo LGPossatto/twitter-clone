@@ -3,8 +3,9 @@ import UserContext from "./userContext";
 import userReducer from "./userReducer";
 import firebase from "firebase";
 
+import { toUTC } from "../../utils/utils";
 import {
-  GET_USER_INFO,
+  GET_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
 } from "../types";
@@ -12,8 +13,8 @@ import {
 const UserState = (props) => {
   const initialState = {
     user: null,
-    following: 0,
-    follower: 0,
+    following: null,
+    followers: null,
   };
 
   const db = firebase.firestore();
@@ -26,39 +27,54 @@ const UserState = (props) => {
         .auth()
         .signInWithEmailAndPassword(email, password);
 
-      getUserInfo(
-        db.collection("users").doc(userCredential.user.uid),
-        GET_USER_INFO
-      );
-      getUserInfo(
-        db
-          .collection("users")
-          .doc(userCredential.user.uid)
-          .collection("user-follow")
-          .doc("followers"),
-        GET_USER_FOLLOWERS
-      );
-      getUserInfo(
-        db
-          .collection("users")
-          .doc(userCredential.user.uid)
-          .collection("user-follow")
-          .doc("following"),
-        GET_USER_FOLLOWING
-      );
+      getUserInfo(userCredential.user.uid);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // get user info
-  const getUserInfo = async (docRef, type) => {
-    try {
-      const doc = await docRef.get();
+  // post new tweet
+  const postTweet = async (tweet) => {
+    const tweetDoc = db
+      .collection("users")
+      .doc(state.user.userUID)
+      .collection("tweets")
+      .doc();
 
-      if (doc.exists) {
-        console.log(doc.data());
-        dispatch({ type: type, payload: doc.data() });
+    const newTweet = {
+      ...tweet,
+      userUID: state.user.userUID,
+      userName: state.user.name,
+      userEmail: state.user.email,
+      tweetID: tweetDoc.id,
+    };
+
+    await tweetDoc.set(newTweet);
+  };
+
+  // get user info
+  const getUserInfo = async (userUID) => {
+    try {
+      const profileDoc = await db.collection("users").doc(userUID).get();
+      const followerDoc = await db
+        .collection("users")
+        .doc(userUID)
+        .collection("user-follow")
+        .doc("followers")
+        .get();
+      const followingDoc = await db
+        .collection("users")
+        .doc(userUID)
+        .collection("user-follow")
+        .doc("following")
+        .get();
+
+      console.log(profileDoc.data(), followerDoc.data(), followingDoc.data());
+
+      if (profileDoc.exists && followerDoc.exists && followingDoc.exists) {
+        dispatch({ type: GET_USER_PROFILE_INFO, payload: profileDoc.data() });
+        dispatch({ type: GET_USER_FOLLOWERS, payload: followerDoc.data() });
+        dispatch({ type: GET_USER_FOLLOWING, payload: followingDoc.data() });
       } else {
         console.log("No such document!");
       }
@@ -82,19 +98,9 @@ const UserState = (props) => {
   };
 
   // create new user database
-  const createUserDb = async (userUid, email, profileInfo) => {
-    const toUTC = (date) => {
-      return Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        date.getUTCHours(),
-        date.getUTCMinutes(),
-        date.getUTCSeconds()
-      );
-    };
-
+  const createUserDb = async (userUID, email, profileInfo) => {
     const profileObj = {
+      userUID: userUID,
       name: profileInfo[0][0],
       email: email,
       bio: profileInfo[1][0],
@@ -103,22 +109,29 @@ const UserState = (props) => {
       accountBd: toUTC(new Date()),
     };
 
-    db.collection("users").doc(userUid).set(profileObj);
+    db.collection("users").doc(userUID).set(profileObj);
     db.collection("users")
-      .doc(userUid)
+      .doc(userUID)
       .collection("user-follow")
       .doc("followers")
-      .set({});
+      .set({ number: 0 });
     db.collection("users")
-      .doc(userUid)
+      .doc(userUID)
       .collection("user-follow")
       .doc("following")
-      .set({});
+      .set({ number: 0 });
   };
 
   return (
     <UserContext.Provider
-      value={{ user: state.user, createAccount, loginWithEmail }}
+      value={{
+        user: state.user,
+        followers: state.followers,
+        following: state.following,
+        createAccount,
+        loginWithEmail,
+        postTweet,
+      }}
     >
       {props.children}
     </UserContext.Provider>

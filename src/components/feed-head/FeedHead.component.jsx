@@ -8,6 +8,8 @@ import FollowNumberLink from "../../components/follow-number-link/FollowNumberLi
 
 const FeedHead = ({
   user: { name, email, bio, birthday, location, accountBd },
+  followers,
+  following,
 }) => {
   return (
     <div className="feed-head">
@@ -26,17 +28,20 @@ const FeedHead = ({
           <div className="more-info flex flex-fw-w">
             <IconInfo icon="fas fa-map-marker-alt" text={location}></IconInfo>
             <IconInfo icon="fas fa-birthday-cake" text={birthday}></IconInfo>
-            <IconInfo icon="fas fa-calendar-alt" text={accountBd}></IconInfo>
+            <IconInfo
+              icon="fas fa-calendar-alt"
+              text={`Joined ${accountBd}`}
+            ></IconInfo>
           </div>
           <div className="follow-numbers">
             <FollowNumberLink
               url="#!"
-              number="35"
+              number={following.number}
               text="Following"
             ></FollowNumberLink>
             <FollowNumberLink
               url="#!"
-              number="58.5M"
+              number={followers.number}
               text="Followers"
             ></FollowNumberLink>
           </div>
@@ -48,6 +53,8 @@ const FeedHead = ({
 
 FeedHead.propTypes = {
   user: PropTypes.object.isRequired,
+  followers: PropTypes.object.isRequired,
+  following: PropTypes.object.isRequired,
 };
 
 export default FeedHead;
