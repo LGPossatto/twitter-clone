@@ -8,6 +8,8 @@ import {
   GET_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
+  GET_USER_TWEETS,
+  POST_USER_TWEETS,
 } from "../types";
 
 const UserState = (props) => {
@@ -15,6 +17,7 @@ const UserState = (props) => {
     user: null,
     following: null,
     followers: null,
+    tweets: null,
   };
 
   const db = firebase.firestore();
@@ -35,21 +38,31 @@ const UserState = (props) => {
 
   // post new tweet
   const postTweet = async (tweet) => {
-    const tweetDoc = db
-      .collection("users")
-      .doc(state.user.userUID)
-      .collection("tweets")
-      .doc();
-
+    const userUID = state.user.userUID;
+    const tweetsNumber = state.tweets["number"].number + 1;
     const newTweet = {
       ...tweet,
-      userUID: state.user.userUID,
+      userUID: userUID,
       userName: state.user.name,
       userEmail: state.user.email,
-      tweetID: tweetDoc.id,
+      tweetID: tweetsNumber,
+      likes: [],
     };
 
-    await tweetDoc.set(newTweet);
+    await db
+      .collection("users")
+      .doc(userUID)
+      .collection("tweets")
+      .doc(`${tweetsNumber}`)
+      .set(newTweet);
+    await db
+      .collection("users")
+      .doc(userUID)
+      .collection("tweets")
+      .doc("number")
+      .set({ number: tweetsNumber });
+
+    dispatch({ type: POST_USER_TWEETS, payload: { newTweet, tweetsNumber } });
   };
 
   // get user info
@@ -69,8 +82,6 @@ const UserState = (props) => {
         .doc("following")
         .get();
 
-      console.log(profileDoc.data(), followerDoc.data(), followingDoc.data());
-
       if (profileDoc.exists && followerDoc.exists && followingDoc.exists) {
         dispatch({ type: GET_USER_PROFILE_INFO, payload: profileDoc.data() });
         dispatch({ type: GET_USER_FOLLOWERS, payload: followerDoc.data() });
@@ -81,6 +92,31 @@ const UserState = (props) => {
     } catch (err) {
       console.log("Error getting document:", err);
     }
+  };
+
+  // get user tweets
+  const getUserTweets = async (userUID) => {
+    const tweetsDoc = await db
+      .collection("users")
+      .doc(userUID)
+      .collection("tweets")
+      .get();
+
+    let tweetsObj = {};
+
+    tweetsDoc.docs.map((doc) => {
+      const docData = doc.data();
+
+      if (docData.number) {
+        tweetsObj["number"] = docData;
+      } else {
+        tweetsObj[`${docData.tweetID}`] = docData;
+      }
+
+      return null;
+    });
+
+    dispatch({ type: GET_USER_TWEETS, payload: tweetsObj });
   };
 
   // create user account
@@ -109,16 +145,24 @@ const UserState = (props) => {
       accountBd: toUTC(new Date()),
     };
 
-    db.collection("users").doc(userUID).set(profileObj);
-    db.collection("users")
+    await db.collection("users").doc(userUID).set(profileObj);
+    await db
+      .collection("users")
       .doc(userUID)
       .collection("user-follow")
       .doc("followers")
       .set({ number: 0 });
-    db.collection("users")
+    await db
+      .collection("users")
       .doc(userUID)
       .collection("user-follow")
       .doc("following")
+      .set({ number: 0 });
+    await db
+      .collection("users")
+      .doc(userUID)
+      .collection("tweets")
+      .doc("number")
       .set({ number: 0 });
   };
 
@@ -128,9 +172,11 @@ const UserState = (props) => {
         user: state.user,
         followers: state.followers,
         following: state.following,
+        tweets: state.tweets,
         createAccount,
         loginWithEmail,
         postTweet,
+        getUserTweets,
       }}
     >
       {props.children}

@@ -27,3 +27,10 @@ export const getMonthName = (month) => {
 
   return monthList[month];
 };
+
+export const getMonthAndDay = (date) => {
+  const localDate = new Date(date);
+
+  return `${getMonthName(localDate.getMonth())}
+      ${" "}${localDate.getFullYear()}`;
+};

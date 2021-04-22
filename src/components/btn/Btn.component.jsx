@@ -2,11 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { toUTC } from "../../utils/utils";
-
 import "./btn.style.scss";
 
-const Btn = ({ text, url, no_bg, block, med, onClick, message }) => {
+const Btn = ({ text, url, no_bg, block, med, onClick }) => {
   return (
     <Link
       to={url}
@@ -15,8 +13,7 @@ const Btn = ({ text, url, no_bg, block, med, onClick, message }) => {
       }`}
       onClick={() => {
         if (onClick) {
-          console.log("onclick");
-          onClick({ message: message, date: toUTC(new Date()) });
+          onClick();
         }
       }}
     >
@@ -32,7 +29,6 @@ Btn.propTypes = {
   block: PropTypes.bool,
   med: PropTypes.bool,
   onClick: PropTypes.func,
-  message: PropTypes.string,
 };
 
 export default Btn;

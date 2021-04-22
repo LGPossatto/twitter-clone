@@ -1,8 +1,14 @@
+import PropTypes from "prop-types";
+
+import { getMonthAndDay } from "../../utils/utils";
+
 import "./tweet.style.scss";
 import tweetImg from "../../assets/images/placeholder.png";
 import TweetBtn from "../tweet-btn/TweetBtn.component";
 
-const Tweet = () => {
+const Tweet = ({ tweet }) => {
+  const { userName, userEmail, message, date } = tweet;
+
   return (
     <div className="tweet flex">
       <div className="img-box">
@@ -11,14 +17,14 @@ const Tweet = () => {
       <div className="tweet__info">
         <div className="tweet-top flex jc-sb">
           <h2 className="fs-med">
-            Name <span className="fc-secondary">@login - Apr 8</span>
+            {userName}{" "}
+            <span className="fc-secondary">
+              {userEmail} - {getMonthAndDay(date)}
+            </span>
           </h2>
           <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
         </div>
-        <p className="fs-med msg">
-          Vitae veritatis consequatur iure ipsa amet maxime aliquam dolorum.
-          Velit?
-        </p>
+        <p className="fs-med msg">{message}</p>
         <div className="tweet-btns flex jc-se ai-c">
           <TweetBtn url="#!" type="reply" icon="fas fa-comment-dots"></TweetBtn>
           <TweetBtn url="#!" type="retweets" icon="fas fa-retweet"></TweetBtn>
@@ -27,6 +33,10 @@ const Tweet = () => {
       </div>
     </div>
   );
+};
+
+Tweet.propTypes = {
+  tweet: PropTypes.object.isRequired,
 };
 
 export default Tweet;

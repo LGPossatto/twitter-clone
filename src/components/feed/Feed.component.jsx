@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useEffect, useContext } from "react";
 import UserContext from "../../context/user/userContext";
 
 import "./feed.style.scss";
@@ -8,7 +8,14 @@ import Tweet from "../tweet/Tweet.component";
 import TextBox from "../text-box/TextBox.component";
 
 const Feed = () => {
-  const { user, followers, following } = useContext(UserContext);
+  const { user, followers, following, getUserTweets, tweets } = useContext(
+    UserContext
+  );
+
+  useEffect(() => {
+    getUserTweets(user.userUID);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="feed">
@@ -28,7 +35,16 @@ const Feed = () => {
           <TextBox></TextBox>
         </>
       ) : null}
-      <Tweet></Tweet>
+      {tweets &&
+        Object.keys(tweets)
+          .reverse()
+          .map((tweet) => {
+            if (tweet === "number") {
+              return null;
+            } else {
+              return <Tweet key={tweet} tweet={tweets[tweet]}></Tweet>;
+            }
+          })}
     </div>
   );
 };

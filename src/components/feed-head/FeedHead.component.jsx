@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+import { getMonthAndDay } from "../../utils/utils";
+
 import "./feedHead.style.scss";
 import headImg from "../../assets/images/placeholder.png";
 import Btn from "../../components/btn/Btn.component";
@@ -30,7 +32,7 @@ const FeedHead = ({
             <IconInfo icon="fas fa-birthday-cake" text={birthday}></IconInfo>
             <IconInfo
               icon="fas fa-calendar-alt"
-              text={`Joined ${accountBd}`}
+              text={`Joined ${getMonthAndDay(accountBd)}`}
             ></IconInfo>
           </div>
           <div className="follow-numbers">

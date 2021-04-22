@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
 import UserContext from "../../context/user/userContext";
 
+import { toUTC } from "../../utils/utils";
+
 import "./textBox.style.scss";
 import profileImg from "../../assets/images/placeholder.png";
 import Btn from "../btn/Btn.component";
@@ -8,6 +10,11 @@ import Btn from "../btn/Btn.component";
 const TextBox = () => {
   const [message, setMessage] = useState("");
   const { postTweet } = useContext(UserContext);
+
+  const onClick = () => {
+    postTweet({ message: message, date: toUTC(new Date()) });
+    setMessage("");
+  };
 
   return (
     <div className="text-box flex">
@@ -22,14 +29,7 @@ const TextBox = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="What is happening..."
         ></textarea>
-        <Btn
-          med
-          block
-          url="#!"
-          text="Tweet"
-          onClick={postTweet}
-          message={message}
-        ></Btn>
+        <Btn med block url="#!" text="Tweet" onClick={onClick}></Btn>
       </div>
     </div>
   );

@@ -22,6 +22,8 @@
   }
 
   &__info {
+    flex-grow: 1;
+
     .tweet-top {
       span {
         font-weight: 400;
