@@ -4,6 +4,8 @@ import {
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
   POST_USER_TWEETS,
+  POST_LIKE_TWEET,
+  REMOVE_LIKE_TWEET,
 } from "../types";
 
 const userReducer = (state, action) => {
@@ -34,6 +36,35 @@ const userReducer = (state, action) => {
           ...state.tweets,
           ["number"]: { number: action.payload.tweetsNumber },
           [`${action.payload.tweetsNumber}`]: action.payload.newTweet,
+        },
+      };
+    case POST_LIKE_TWEET:
+      return {
+        ...state,
+        tweets: {
+          ...state.tweets,
+          [action.payload.tweetID]: {
+            ...state.tweets[action.payload.tweetID],
+            likes: [
+              ...state.tweets[action.payload.tweetID].likes,
+              action.payload.userUID,
+            ],
+          },
+        },
+      };
+    case REMOVE_LIKE_TWEET:
+      const newLikes = state.tweets[action.payload.tweetID].likes.filter(
+        (like) => like !== action.payload.userUID
+      );
+
+      return {
+        ...state,
+        tweets: {
+          ...state.tweets,
+          [action.payload.tweetID]: {
+            ...state.tweets[action.payload.tweetID],
+            likes: [...newLikes],
+          },
         },
       };
     default:

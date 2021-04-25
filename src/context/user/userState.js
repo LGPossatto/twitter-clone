@@ -10,6 +10,8 @@ import {
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
   POST_USER_TWEETS,
+  POST_LIKE_TWEET,
+  REMOVE_LIKE_TWEET,
 } from "../types";
 
 const UserState = (props) => {
@@ -49,20 +51,66 @@ const UserState = (props) => {
       likes: [],
     };
 
-    await db
-      .collection("users")
-      .doc(userUID)
-      .collection("tweets")
-      .doc(`${tweetsNumber}`)
-      .set(newTweet);
-    await db
-      .collection("users")
-      .doc(userUID)
-      .collection("tweets")
-      .doc("number")
-      .set({ number: tweetsNumber });
+    try {
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("tweets")
+        .doc(`${tweetsNumber}`)
+        .set(newTweet);
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("tweets")
+        .doc("number")
+        .set({ number: tweetsNumber });
 
-    dispatch({ type: POST_USER_TWEETS, payload: { newTweet, tweetsNumber } });
+      dispatch({ type: POST_USER_TWEETS, payload: { newTweet, tweetsNumber } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // like tweet
+  const likeTweet = async (tweetID, tweetUID) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(`${tweetUID}`)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+    try {
+      tweetRef.update({
+        likes: firebase.firestore.FieldValue.arrayUnion(state.user.userUID),
+      });
+
+      dispatch({
+        type: POST_LIKE_TWEET,
+        payload: { tweetID, userUID: state.user.userUID },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // remove like from tweet
+  const removeLikeTweet = async (tweetID, tweetUID) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(`${tweetUID}`)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+    try {
+      tweetRef.update({
+        likes: firebase.firestore.FieldValue.arrayRemove(state.user.userUID),
+      });
+
+      dispatch({
+        type: REMOVE_LIKE_TWEET,
+        payload: { tweetID, userUID: state.user.userUID },
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // get user info
@@ -96,27 +144,31 @@ const UserState = (props) => {
 
   // get user tweets
   const getUserTweets = async (userUID) => {
-    const tweetsDoc = await db
-      .collection("users")
-      .doc(userUID)
-      .collection("tweets")
-      .get();
+    try {
+      const tweetsDoc = await db
+        .collection("users")
+        .doc(userUID)
+        .collection("tweets")
+        .get();
 
-    let tweetsObj = {};
+      let tweetsObj = {};
 
-    tweetsDoc.docs.map((doc) => {
-      const docData = doc.data();
+      tweetsDoc.docs.map((doc) => {
+        const docData = doc.data();
 
-      if (docData.number) {
-        tweetsObj["number"] = docData;
-      } else {
-        tweetsObj[`${docData.tweetID}`] = docData;
-      }
+        if (docData.number) {
+          tweetsObj["number"] = docData;
+        } else {
+          tweetsObj[`${docData.tweetID}`] = docData;
+        }
 
-      return null;
-    });
+        return null;
+      });
 
-    dispatch({ type: GET_USER_TWEETS, payload: tweetsObj });
+      dispatch({ type: GET_USER_TWEETS, payload: tweetsObj });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // create user account
@@ -145,25 +197,29 @@ const UserState = (props) => {
       accountBd: toUTC(new Date()),
     };
 
-    await db.collection("users").doc(userUID).set(profileObj);
-    await db
-      .collection("users")
-      .doc(userUID)
-      .collection("user-follow")
-      .doc("followers")
-      .set({ number: 0 });
-    await db
-      .collection("users")
-      .doc(userUID)
-      .collection("user-follow")
-      .doc("following")
-      .set({ number: 0 });
-    await db
-      .collection("users")
-      .doc(userUID)
-      .collection("tweets")
-      .doc("number")
-      .set({ number: 0 });
+    try {
+      await db.collection("users").doc(userUID).set(profileObj);
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("user-follow")
+        .doc("followers")
+        .set({ number: 0 });
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("user-follow")
+        .doc("following")
+        .set({ number: 0 });
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("tweets")
+        .doc("number")
+        .set({ number: 0 });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -176,6 +232,7 @@ const UserState = (props) => {
         createAccount,
         loginWithEmail,
         postTweet,
+        likeTweet,
         getUserTweets,
       }}
     >

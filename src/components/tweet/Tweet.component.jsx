@@ -1,13 +1,20 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
 
 import { getMonthAndDay } from "../../utils/utils";
+import UserContext from "../../context/user/userContext";
 
 import "./tweet.style.scss";
 import tweetImg from "../../assets/images/placeholder.png";
 import TweetBtn from "../tweet-btn/TweetBtn.component";
 
 const Tweet = ({ tweet }) => {
-  const { userName, userEmail, message, date } = tweet;
+  const { likeTweet } = useContext(UserContext);
+  const { userName, userEmail, message, date, likes, tweetID, userUID } = tweet;
+
+  const postLike = () => {
+    likeTweet(tweetID, userUID);
+  };
 
   return (
     <div className="tweet flex">
@@ -26,9 +33,27 @@ const Tweet = ({ tweet }) => {
         </div>
         <p className="fs-med msg">{message}</p>
         <div className="tweet-btns flex jc-se ai-c">
-          <TweetBtn url="#!" type="reply" icon="fas fa-comment-dots"></TweetBtn>
-          <TweetBtn url="#!" type="retweets" icon="fas fa-retweet"></TweetBtn>
-          <TweetBtn url="#!" type="likes" icon="fas fa-heart"></TweetBtn>
+          <TweetBtn
+            usersList={[1, 2, 3, 4, 5]}
+            postLike={postLike}
+            url="#!"
+            type="reply"
+            icon="fas fa-comment-dots"
+          ></TweetBtn>
+          <TweetBtn
+            usersList={[1, 2, 3]}
+            postLike={postLike}
+            url="#!"
+            type="retweets"
+            icon="fas fa-retweet"
+          ></TweetBtn>
+          <TweetBtn
+            usersList={likes}
+            postLike={postLike}
+            url="#!"
+            type="likes"
+            icon="fas fa-heart"
+          ></TweetBtn>
         </div>
       </div>
     </div>

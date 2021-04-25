@@ -42,7 +42,12 @@ const Feed = () => {
             if (tweet === "number") {
               return null;
             } else {
-              return <Tweet key={tweet} tweet={tweets[tweet]}></Tweet>;
+              return (
+                <Tweet
+                  key={tweets[tweet].tweetID}
+                  tweet={tweets[tweet]}
+                ></Tweet>
+              );
             }
           })}
     </div>
