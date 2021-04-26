@@ -1,5 +1,5 @@
 import "./followCard.style.scss";
-import profileImg from "../../assets/images/placeholder.png";
+import profileImg from "../../assets/images/twiter-profile.jpg";
 import Btn from "../btn/Btn.component";
 
 const FollowCard = () => {

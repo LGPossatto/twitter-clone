@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { getMonthAndDay } from "../../utils/utils";
 
 import "./feedHead.style.scss";
-import headImg from "../../assets/images/placeholder.png";
+import profileImg from "../../assets/images/twiter-profile.jpg";
+import pannelImg from "../../assets/images/twitter-pannel.png";
 import Btn from "../../components/btn/Btn.component";
 import IconInfo from "../../components/icon-info/IconInfo.component";
 import FollowNumberLink from "../../components/follow-number-link/FollowNumberLink.component";
@@ -16,11 +17,11 @@ const FeedHead = ({
   return (
     <div className="feed-head">
       <div className="head-img">
-        <img src={headImg} alt="head" />
+        <img src={pannelImg} alt="head" />
       </div>
       <div className="profile">
         <div className="profile__img">
-          <img src={headImg} alt="profile" />
+          <img src={profileImg} alt="profile" />
         </div>
         <Btn url="#!" text="Follow" no_bg med></Btn>
         <div className="profile__info">

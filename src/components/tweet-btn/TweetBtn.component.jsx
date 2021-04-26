@@ -1,17 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import "./tweetBtn.style.scss";
 
-const TweetBtn = ({ url, type, icon, usersList, postLike }) => {
+const TweetBtn = ({
+  url,
+  type,
+  icon,
+  usersList,
+  userUID,
+  toPost,
+  toRemove,
+}) => {
   const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (usersList.includes(userUID)) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [usersList, userUID]);
 
   return (
     <Link
       to={url}
-      onClick={postLike}
-      className={`tweet-btn fs-med fc-secondary ${type}`}
+      onClick={() => {
+        if (active) {
+          toRemove();
+        } else {
+          toPost();
+        }
+      }}
+      className={`tweet-btn fs-med fc-secondary ${type} ${
+        active ? `active-${type}` : ""
+      }`}
     >
       <i className={`fs-med fc-secondary ${icon}`}></i>
       {usersList.length}
@@ -24,7 +48,9 @@ TweetBtn.propTypes = {
   type: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   usersList: PropTypes.array.isRequired,
-  postLike: PropTypes.func.isRequired,
+  userUID: PropTypes.string.isRequired,
+  toPost: PropTypes.func.isRequired,
+  toRemove: PropTypes.func.isRequired,
 };
 
 export default TweetBtn;

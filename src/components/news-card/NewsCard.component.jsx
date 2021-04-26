@@ -1,5 +1,5 @@
 import "./newsCard.style.scss";
-import headImg from "../../assets/images/placeholder.png";
+import headImg from "../../assets/images/twiter-profile.jpg";
 
 const NewsCard = ({ img }) => {
   return (

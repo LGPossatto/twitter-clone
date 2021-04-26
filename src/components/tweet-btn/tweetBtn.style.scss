@@ -1,6 +1,8 @@
 @import "../../assets/styles/variables.style.scss";
 
 .tweet-btn {
+  margin-left: 12px;
+
   i {
     margin-right: 4px;
   }
@@ -33,5 +35,29 @@
     i {
       color: $danger-color;
     }
+  }
+}
+
+.active-reply {
+  color: $primary-color;
+
+  i {
+    color: $primary-color;
+  }
+}
+
+.active-retweets {
+  color: $success-color;
+
+  i {
+    color: $success-color;
+  }
+}
+
+.active-likes {
+  color: $danger-color;
+
+  i {
+    color: $danger-color;
   }
 }

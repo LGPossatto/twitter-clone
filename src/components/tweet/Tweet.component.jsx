@@ -5,15 +5,19 @@ import { getMonthAndDay } from "../../utils/utils";
 import UserContext from "../../context/user/userContext";
 
 import "./tweet.style.scss";
-import tweetImg from "../../assets/images/placeholder.png";
+import tweetImg from "../../assets/images/twiter-profile.jpg";
 import TweetBtn from "../tweet-btn/TweetBtn.component";
 
 const Tweet = ({ tweet }) => {
-  const { likeTweet } = useContext(UserContext);
+  const { likeTweet, removeLikeTweet } = useContext(UserContext);
   const { userName, userEmail, message, date, likes, tweetID, userUID } = tweet;
 
   const postLike = () => {
     likeTweet(tweetID, userUID);
+  };
+
+  const removeLike = () => {
+    removeLikeTweet(tweetID, userUID);
   };
 
   return (
@@ -32,24 +36,21 @@ const Tweet = ({ tweet }) => {
           <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
         </div>
         <p className="fs-med msg">{message}</p>
-        <div className="tweet-btns flex jc-se ai-c">
+        <div className="tweet-btns flex ai-c">
           <TweetBtn
             usersList={[1, 2, 3, 4, 5]}
-            postLike={postLike}
+            userUID={userUID}
+            toPost={postLike}
+            toRemove={removeLike}
             url="#!"
             type="reply"
             icon="fas fa-comment-dots"
           ></TweetBtn>
           <TweetBtn
-            usersList={[1, 2, 3]}
-            postLike={postLike}
-            url="#!"
-            type="retweets"
-            icon="fas fa-retweet"
-          ></TweetBtn>
-          <TweetBtn
             usersList={likes}
-            postLike={postLike}
+            userUID={userUID}
+            toPost={postLike}
+            toRemove={removeLike}
             url="#!"
             type="likes"
             icon="fas fa-heart"
