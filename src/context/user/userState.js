@@ -12,15 +12,21 @@ import {
   POST_USER_TWEETS,
   POST_LIKE_TWEET,
   REMOVE_LIKE_TWEET,
+  SAVE_SESSION,
 } from "../types";
 
 const UserState = (props) => {
-  const initialState = {
+  const sessionState = JSON.parse(window.sessionStorage.getItem("loggin"));
+  let initialState = {
     user: null,
     following: null,
     followers: null,
     tweets: null,
   };
+
+  if (sessionState.user && sessionState.following && sessionState.followers) {
+    initialState = sessionState;
+  }
 
   const db = firebase.firestore();
   const [state, dispatch] = useReducer(userReducer, initialState);
@@ -114,6 +120,8 @@ const UserState = (props) => {
         dispatch({ type: GET_USER_PROFILE_INFO, payload: profileDoc.data() });
         dispatch({ type: GET_USER_FOLLOWERS, payload: followerDoc.data() });
         dispatch({ type: GET_USER_FOLLOWING, payload: followingDoc.data() });
+
+        dispatch({ type: SAVE_SESSION });
       } else {
         console.log("No such document!");
       }

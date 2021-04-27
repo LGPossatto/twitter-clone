@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { getMonthAndDay } from "../../utils/utils";
@@ -11,6 +12,7 @@ import TweetBtn from "../tweet-btn/TweetBtn.component";
 const Tweet = ({ tweet }) => {
   const { likeTweet, removeLikeTweet } = useContext(UserContext);
   const { userName, userEmail, message, date, likes, tweetID, userUID } = tweet;
+  const urlParams = useParams();
 
   const postLike = () => {
     likeTweet(tweetID, userUID);
@@ -18,6 +20,10 @@ const Tweet = ({ tweet }) => {
 
   const removeLike = () => {
     removeLikeTweet(tweetID, userUID);
+  };
+
+  const postComment = () => {
+    console.log("to comment");
   };
 
   return (
@@ -33,28 +39,34 @@ const Tweet = ({ tweet }) => {
               {userEmail} - {getMonthAndDay(date)}
             </span>
           </h2>
-          <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
+          {!urlParams.tweetID && (
+            <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
+          )}
         </div>
         <p className="fs-med msg">{message}</p>
         <div className="tweet-btns flex ai-c">
-          <TweetBtn
-            usersList={[1, 2, 3, 4, 5]}
-            userUID={userUID}
-            toPost={postLike}
-            toRemove={removeLike}
-            url="#!"
-            type="reply"
-            icon="fas fa-comment-dots"
-          ></TweetBtn>
-          <TweetBtn
-            usersList={likes}
-            userUID={userUID}
-            toPost={postLike}
-            toRemove={removeLike}
-            url="#!"
-            type="likes"
-            icon="fas fa-heart"
-          ></TweetBtn>
+          {!urlParams.tweetID && (
+            <>
+              <TweetBtn
+                usersList={[1, 2, 3, 4, 5]}
+                userUID={userUID}
+                toPost={postComment}
+                toRemove={postComment}
+                url={`/user/${userUID}/tweet/${tweetID}`}
+                type="reply"
+                icon="fas fa-comment-dots"
+              ></TweetBtn>
+              <TweetBtn
+                usersList={likes}
+                userUID={userUID}
+                toPost={postLike}
+                toRemove={removeLike}
+                url="#!"
+                type="likes"
+                icon="fas fa-heart"
+              ></TweetBtn>
+            </>
+          )}
         </div>
       </div>
     </div>

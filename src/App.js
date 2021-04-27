@@ -6,6 +6,7 @@ import UserContext from "./context/user/userContext";
 import "./assets/styles/globals.style.scss";
 import Home from "./pages/home/Home.page";
 import Login from "./pages/login/Login.page";
+import Comment from "./pages/comment/Comment.page";
 
 function App() {
   const { user, followers, following } = useContext(UserContext);
@@ -13,9 +14,15 @@ function App() {
   return (
     <BrowserRouter>
       {user && followers && following ? (
-        <Switch>
+        <>
           <Route component={Home}></Route>
-        </Switch>
+          <Switch>
+            <Route
+              path={`/user/:userUID/tweet/:tweetID`}
+              component={Comment}
+            ></Route>
+          </Switch>
+        </>
       ) : (
         <Route component={Login}></Route>
       )}

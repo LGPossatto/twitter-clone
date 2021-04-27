@@ -39,7 +39,7 @@
       }
     }
 
-    a {
+    & > button {
       position: relative;
       right: calc(-100% + 12px);
       width: max-content;

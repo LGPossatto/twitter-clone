@@ -34,3 +34,7 @@ export const getMonthAndDay = (date) => {
   return `${getMonthName(localDate.getMonth())}
       ${" "}${localDate.getFullYear()}`;
 };
+
+export const saveSession = (state) => {
+  window.sessionStorage.setItem("loggin", JSON.stringify(state));
+};

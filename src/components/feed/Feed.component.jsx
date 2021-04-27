@@ -8,9 +8,14 @@ import Tweet from "../tweet/Tweet.component";
 import TextBox from "../text-box/TextBox.component";
 
 const Feed = () => {
-  const { user, followers, following, getUserTweets, tweets } = useContext(
-    UserContext
-  );
+  const {
+    user,
+    followers,
+    following,
+    getUserTweets,
+    tweets,
+    postTweet,
+  } = useContext(UserContext);
 
   useEffect(() => {
     getUserTweets(user.userUID);
@@ -32,7 +37,12 @@ const Feed = () => {
             <FeedMenuItem url="#!" text="Replies"></FeedMenuItem>
             <FeedMenuItem url="#!" text="Likes"></FeedMenuItem>
           </div>
-          <TextBox></TextBox>
+          <TextBox
+            placeholder={"What is happening..."}
+            btnText={"Tweet"}
+            postMsg={postTweet}
+            img
+          ></TextBox>
         </>
       ) : null}
       {tweets &&

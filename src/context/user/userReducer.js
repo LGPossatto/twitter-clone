@@ -6,7 +6,10 @@ import {
   POST_USER_TWEETS,
   POST_LIKE_TWEET,
   REMOVE_LIKE_TWEET,
+  SAVE_SESSION,
 } from "../types";
+
+import { saveSession } from "../../utils/utils";
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -67,6 +70,9 @@ const userReducer = (state, action) => {
           },
         },
       };
+    case SAVE_SESSION:
+      saveSession(state);
+      return state;
     default:
       return state;
   }

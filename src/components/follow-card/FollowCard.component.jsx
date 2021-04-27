@@ -13,7 +13,7 @@ const FollowCard = () => {
           <h2 className="fs-med">Nome</h2>
           <span className="fs-med fc-secondary">@login</span>
         </div>
-        <Btn url="#!" text="Follow" no_bg med></Btn>
+        <Btn text="Follow" no_bg med></Btn>
       </div>
     </div>
   );
