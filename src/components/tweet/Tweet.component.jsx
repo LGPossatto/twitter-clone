@@ -11,7 +11,16 @@ import TweetBtn from "../tweet-btn/TweetBtn.component";
 
 const Tweet = ({ tweet }) => {
   const { likeTweet, removeLikeTweet } = useContext(UserContext);
-  const { userName, userEmail, message, date, likes, tweetID, userUID } = tweet;
+  const {
+    userName,
+    userEmail,
+    message,
+    date,
+    likes,
+    tweetID,
+    userUID,
+    comments,
+  } = tweet;
   const urlParams = useParams();
 
   const postLike = () => {
@@ -48,7 +57,7 @@ const Tweet = ({ tweet }) => {
           {!urlParams.tweetID && (
             <>
               <TweetBtn
-                usersList={[1, 2, 3, 4, 5]}
+                usersList={comments}
                 userUID={userUID}
                 toPost={postComment}
                 toRemove={postComment}

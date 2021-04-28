@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { toUTC } from "../../utils/utils";
@@ -9,9 +10,14 @@ import Btn from "../btn/Btn.component";
 
 const TextBox = ({ placeholder, btnText, img, postMsg }) => {
   const [message, setMessage] = useState("");
+  const { userUID, tweetID } = useParams();
 
   const onClick = () => {
-    postMsg({ message: message, date: toUTC(new Date()) });
+    if (tweetID) {
+      postMsg({ message: message, date: toUTC(new Date()), userUID, tweetID });
+    } else {
+      postMsg({ message: message, date: toUTC(new Date()) });
+    }
     setMessage("");
   };
 
@@ -40,7 +46,7 @@ TextBox.propTypes = {
   placeholder: PropTypes.string.isRequired,
   btnText: PropTypes.string.isRequired,
   postMsg: PropTypes.func.isRequired,
-  img: PropTypes.bool.isRequired,
+  img: PropTypes.bool,
 };
 
 export default TextBox;

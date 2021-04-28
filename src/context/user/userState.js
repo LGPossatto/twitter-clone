@@ -5,14 +5,16 @@ import firebase from "firebase";
 
 import { toUTC } from "../../utils/utils";
 import {
+  SAVE_SESSION,
   GET_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
+  GET_COMMENTS,
   POST_USER_TWEETS,
+  POST_COMMENT,
   POST_LIKE_TWEET,
   REMOVE_LIKE_TWEET,
-  SAVE_SESSION,
 } from "../types";
 
 const UserState = (props) => {
@@ -22,10 +24,15 @@ const UserState = (props) => {
     following: null,
     followers: null,
     tweets: null,
+    comments: null,
   };
 
-  if (sessionState.user && sessionState.following && sessionState.followers) {
-    initialState = sessionState;
+  try {
+    if (sessionState.user && sessionState.following && sessionState.followers) {
+      initialState = sessionState;
+    }
+  } catch (err) {
+    console.log("No session state");
   }
 
   const db = firebase.firestore();
@@ -144,7 +151,7 @@ const UserState = (props) => {
       tweetsDoc.docs.map((doc) => {
         const docData = doc.data();
 
-        if (docData.number) {
+        if (docData.number >= 0) {
           tweetsObj["number"] = docData;
         } else {
           tweetsObj[`${docData.tweetID}`] = docData;
@@ -159,8 +166,40 @@ const UserState = (props) => {
     }
   };
 
+  // get tweet comments
+  const getTweetComments = async (tweetUserUID, tweetID) => {
+    try {
+      const commentsDoc = await db
+        .collection("users")
+        .doc(tweetUserUID)
+        .collection("tweets")
+        .doc(tweetID)
+        .collection("comments")
+        .get();
+
+      let commentsObj = {};
+
+      commentsDoc.docs.map((doc) => {
+        const docData = doc.data();
+        console.log(docData, docData.number);
+
+        if (docData.number >= 0) {
+          commentsObj["number"] = docData;
+        } else {
+          commentsObj[`${docData.commentID}`] = docData;
+        }
+
+        return null;
+      });
+
+      dispatch({ type: GET_COMMENTS, payload: commentsObj });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   //-----------------------------------------------------------------//
-  //------------------------(POST-LIKE)-TWEET------------------------//
+  //------------------------(POST-LIKE-COMMENT)-TWEET------------------------//
   //-----------------------------------------------------------------//
 
   // post new tweet
@@ -174,6 +213,7 @@ const UserState = (props) => {
       userEmail: state.user.email,
       tweetID: tweetsNumber,
       likes: [],
+      comments: [],
     };
 
     try {
@@ -189,8 +229,60 @@ const UserState = (props) => {
         .collection("tweets")
         .doc("number")
         .set({ number: tweetsNumber });
+      await db
+        .collection("users")
+        .doc(userUID)
+        .collection("tweets")
+        .doc(`${tweetsNumber}`)
+        .collection("comments")
+        .doc("number")
+        .set({ number: 0 });
 
       dispatch({ type: POST_USER_TWEETS, payload: { newTweet, tweetsNumber } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // post new comment
+  const commentTweet = async (comment) => {
+    const tweetUserUID = comment.userUID;
+    const tweetNumber = comment.tweetID;
+    const commentNumber = state.comments["number"].number + 1;
+    const commentsListID = `${state.user.userUID}-${commentNumber}`;
+    const newComment = {
+      message: comment.message,
+      date: comment.date,
+      userUID: state.user.userUID,
+      userName: state.user.name,
+      userEmail: state.user.email,
+      commentID: commentNumber,
+      likes: [],
+    };
+
+    const tweetRef = db
+      .collection("users")
+      .doc(tweetUserUID)
+      .collection("tweets")
+      .doc(`${tweetNumber}`);
+
+    try {
+      await tweetRef
+        .collection("comments")
+        .doc(`${commentNumber}`)
+        .set(newComment);
+      await tweetRef
+        .collection("comments")
+        .doc("number")
+        .set({ number: commentNumber });
+      await tweetRef.update({
+        comments: firebase.firestore.FieldValue.arrayUnion(commentsListID),
+      });
+
+      dispatch({
+        type: POST_COMMENT,
+        payload: { newComment, commentNumber, tweetNumber, commentsListID },
+      });
     } catch (err) {
       console.error(err);
     }
@@ -245,10 +337,13 @@ const UserState = (props) => {
         followers: state.followers,
         following: state.following,
         tweets: state.tweets,
+        comments: state.comments,
         loginWithEmail,
         createAccount,
         getUserTweets,
+        getTweetComments,
         postTweet,
+        commentTweet,
         likeTweet,
         removeLikeTweet,
       }}
