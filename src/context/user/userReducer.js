@@ -8,6 +8,8 @@ import {
   POST_USER_TWEETS,
   POST_COMMENT,
   POST_LIKE_TWEET,
+  DELETE_TWEET,
+  DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
 } from "../types";
 
@@ -79,6 +81,23 @@ const userReducer = (state, action) => {
               action.payload.userUID,
             ],
           },
+        },
+      };
+    case DELETE_TWEET:
+      const stateTweets = state.tweets;
+      let newTweets = {};
+      Object.keys(stateTweets)
+        .reverse()
+        .map((tweetKey) => {
+          if (stateTweets[tweetKey].tweetID !== action.payload.tweetID) {
+            newTweets[tweetKey] = stateTweets[tweetKey];
+          }
+          return null;
+        });
+      return {
+        ...state,
+        tweets: {
+          ...newTweets,
         },
       };
     case REMOVE_LIKE_TWEET:

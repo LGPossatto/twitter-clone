@@ -14,6 +14,8 @@ import {
   POST_USER_TWEETS,
   POST_COMMENT,
   POST_LIKE_TWEET,
+  DELETE_TWEET,
+  DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
 } from "../types";
 
@@ -244,6 +246,30 @@ const UserState = (props) => {
     }
   };
 
+  // delete tweet
+  const deleteTweet = async (tweetID) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(state.user.userUID)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+    const commentsRed = tweetRef.collection("comments");
+
+    try {
+      commentsRed.onSnapshot((snapshot) => {
+        snapshot.docs.forEach(async (doc) => {
+          await commentsRed.doc(doc.id).delete();
+        });
+      });
+
+      await tweetRef.delete();
+
+      dispatch({ type: DELETE_TWEET, payload: { tweetID } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // post new comment
   const commentTweet = async (comment) => {
     const tweetUserUID = comment.userUID;
@@ -343,6 +369,7 @@ const UserState = (props) => {
         getUserTweets,
         getTweetComments,
         postTweet,
+        deleteTweet,
         commentTweet,
         likeTweet,
         removeLikeTweet,

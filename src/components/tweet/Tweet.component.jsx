@@ -8,9 +8,10 @@ import UserContext from "../../context/user/userContext";
 import "./tweet.style.scss";
 import tweetImg from "../../assets/images/twiter-profile.jpg";
 import TweetBtn from "../tweet-btn/TweetBtn.component";
+import MoreBtn from "../more-btn/MoreBtn.component";
 
 const Tweet = ({ tweet }) => {
-  const { likeTweet, removeLikeTweet } = useContext(UserContext);
+  const { likeTweet, removeLikeTweet, deleteTweet } = useContext(UserContext);
   const {
     userName,
     userEmail,
@@ -22,6 +23,10 @@ const Tweet = ({ tweet }) => {
     comments,
   } = tweet;
   const urlParams = useParams();
+
+  const removeTweet = () => {
+    deleteTweet(tweetID);
+  };
 
   const postLike = () => {
     likeTweet(tweetID, userUID);
@@ -48,9 +53,7 @@ const Tweet = ({ tweet }) => {
               {userEmail} - {getMonthAndDay(date)}
             </span>
           </h2>
-          {!urlParams.tweetID && (
-            <i className="fas fa-ellipsis-h fs-med fc-secondary"></i>
-          )}
+          {!urlParams.tweetID && <MoreBtn onClick={removeTweet}></MoreBtn>}
         </div>
         <p className="fs-med msg">{message}</p>
         <div className="tweet-btns flex ai-c">
