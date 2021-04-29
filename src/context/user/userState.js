@@ -314,6 +314,27 @@ const UserState = (props) => {
     }
   };
 
+  // delete comment
+  const deleteComment = async (tweetUserUID, tweetID, commentNumber) => {
+    try {
+      await db
+        .collection("users")
+        .doc(tweetUserUID)
+        .collection("tweets")
+        .doc(`${tweetID}`)
+        .collection("comments")
+        .doc(`${commentNumber}`)
+        .delete();
+
+      dispatch({
+        type: DELETE_COMMENT,
+        payload: { tweetUserUID, tweetID, commentNumber },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // like tweet
   const likeTweet = async (tweetID, tweetUID) => {
     const tweetRef = db
@@ -369,9 +390,10 @@ const UserState = (props) => {
         getUserTweets,
         getTweetComments,
         postTweet,
-        deleteTweet,
         commentTweet,
         likeTweet,
+        deleteTweet,
+        deleteComment,
         removeLikeTweet,
       }}
     >

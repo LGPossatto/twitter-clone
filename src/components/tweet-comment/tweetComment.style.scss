@@ -1,0 +1,41 @@
+@import "../../assets/styles/variables.style.scss";
+
+.tweet-comment {
+  padding: 12px;
+
+  border-bottom: 1px solid $secondary-color-dark;
+
+  .img-box {
+    overflow: hidden;
+    flex-shrink: 0;
+
+    width: 45px;
+    height: 45px;
+    margin-right: 12px;
+
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+    flex-grow: 1;
+
+    .tweet-comment-top {
+      span {
+        font-weight: 400;
+      }
+    }
+
+    .tweet-comment-btns {
+      justify-content: flex-end;
+    }
+
+    .msg {
+      margin: 6px 0;
+    }
+  }
+}

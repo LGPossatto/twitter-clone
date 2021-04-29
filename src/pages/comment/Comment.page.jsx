@@ -6,6 +6,7 @@ import UserContext from "../../context/user/userContext";
 import "./comment.style.scss";
 import Tweet from "../../components/tweet/Tweet.component";
 import TextBox from "../../components/text-box/TextBox.component";
+import TweetComment from "../../components/tweet-comment/TweetComment.component";
 
 const Comment = () => {
   const { tweets, comments, getTweetComments, commentTweet } = useContext(
@@ -41,10 +42,10 @@ const Comment = () => {
                 return null;
               } else {
                 return (
-                  <Tweet
+                  <TweetComment
                     key={comments[comment].commentID}
-                    tweet={comments[comment]}
-                  ></Tweet>
+                    comment={comments[comment]}
+                  ></TweetComment>
                 );
               }
             })}

@@ -5,69 +5,53 @@ import PropTypes from "prop-types";
 import { getMonthAndDay } from "../../utils/utils";
 import UserContext from "../../context/user/userContext";
 
-import "./tweet.style.scss";
+import "./tweetComment.style.scss";
 import tweetImg from "../../assets/images/twiter-profile.jpg";
 import TweetBtn from "../tweet-btn/TweetBtn.component";
 import MoreBtn from "../more-btn/MoreBtn.component";
 
-const Tweet = ({ tweet }) => {
-  const { likeTweet, removeLikeTweet, deleteTweet } = useContext(UserContext);
+const TweetComment = ({ comment }) => {
+  const { deleteComment } = useContext(UserContext);
   const {
     userName,
     userEmail,
     message,
     date,
     likes,
-    tweetID,
     userUID,
-    comments,
-  } = tweet;
+    commentID,
+  } = comment;
   const urlParams = useParams();
 
-  const removeTweet = () => {
-    deleteTweet(tweetID);
+  const removeComment = () => {
+    deleteComment(urlParams.userUID, urlParams.tweetID, commentID);
   };
 
   const postLike = () => {
-    likeTweet(tweetID, userUID);
+    //likeTweet(tweetID, userUID);
   };
 
   const removeLike = () => {
-    removeLikeTweet(tweetID, userUID);
-  };
-
-  const postComment = () => {
-    console.log("to comment");
+    //removeLikeTweet(tweetID, userUID);
   };
 
   return (
-    <div className="tweet flex">
+    <div className="tweet-comment flex">
       <div className="img-box">
         <img src={tweetImg} alt="profile" />
       </div>
-      <div className="tweet__info">
-        <div className="tweet-top flex jc-sb">
+      <div className="tweet-comment__info">
+        <div className="tweet-comment-top flex jc-sb">
           <h2 className="fs-med">
             {userName}{" "}
             <span className="fc-secondary">
               {userEmail} - {getMonthAndDay(date)}
             </span>
           </h2>
-          {!urlParams.tweetID && <MoreBtn onClick={removeTweet}></MoreBtn>}
+          <MoreBtn onClick={removeComment}></MoreBtn>
         </div>
         <p className="fs-med msg">{message}</p>
-        <div className="tweet-btns flex ai-c">
-          {!urlParams.tweetID && (
-            <TweetBtn
-              usersList={comments}
-              userUID={userUID}
-              toPost={postComment}
-              toRemove={postComment}
-              url={`/user/${userUID}/tweet/${tweetID}`}
-              type="reply"
-              icon="fas fa-comment-dots"
-            ></TweetBtn>
-          )}
+        <div className="tweet-comment-btns flex ai-c">
           <TweetBtn
             usersList={likes}
             userUID={userUID}
@@ -83,8 +67,8 @@ const Tweet = ({ tweet }) => {
   );
 };
 
-Tweet.propTypes = {
-  tweet: PropTypes.object.isRequired,
+TweetComment.propTypes = {
+  comment: PropTypes.object.isRequired,
 };
 
-export default Tweet;
+export default TweetComment;

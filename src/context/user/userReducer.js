@@ -100,6 +100,25 @@ const userReducer = (state, action) => {
           ...newTweets,
         },
       };
+    case DELETE_COMMENT:
+      const stateComments = state.comments;
+      let newComments = {};
+      Object.keys(stateComments)
+        .reverse()
+        .map((commentKey) => {
+          if (
+            stateComments[commentKey].commentID !== action.payload.commentNumber
+          ) {
+            newComments[commentKey] = stateComments[commentKey];
+          }
+          return null;
+        });
+      return {
+        ...state,
+        comments: {
+          ...newComments,
+        },
+      };
     case REMOVE_LIKE_TWEET:
       const newLikes = state.tweets[action.payload.tweetID].likes.filter(
         (like) => like !== action.payload.userUID
