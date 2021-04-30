@@ -1,9 +1,26 @@
+@import "../../assets/styles/variables.style.scss";
 @import "../../assets/styles/mixins.style.scss";
 
-.menu-box {
-  @include bp-small {
-    display: flex;
-    flex-grow: 1;
-    justify-content: right;
+.home {
+  .menu-box {
+    @include bp-small {
+      display: flex;
+      flex-grow: 1;
+      justify-content: right;
+    }
+  }
+
+  .footer {
+    width: 600px;
+    padding: 12px;
+
+    border: 1px solid $secondary-color-dark;
+    border-top: none;
+
+    text-align: center;
+
+    @include bp-tablet {
+      width: 100%;
+    }
   }
 }

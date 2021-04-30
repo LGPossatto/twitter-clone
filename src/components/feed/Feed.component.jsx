@@ -33,9 +33,8 @@ const Feed = () => {
             following={following}
           ></FeedHead>
           <div className="feed__menu flex jc-sb">
-            <FeedMenuItem url="#!" text="Tweets" active></FeedMenuItem>
-            <FeedMenuItem url="#!" text="Replies"></FeedMenuItem>
-            <FeedMenuItem url="#!" text="Likes"></FeedMenuItem>
+            <FeedMenuItem url="#!" text="Feed" active></FeedMenuItem>
+            <FeedMenuItem url="#!" text="Tweets"></FeedMenuItem>
           </div>
           <TextBox
             placeholder={"What is happening..."}

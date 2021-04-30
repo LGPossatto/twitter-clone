@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 
 import "./btn.style.scss";
 
-const Btn = ({ text, no_bg, block, med, onClick }) => {
+const Btn = ({ text, no_bg, block, med, small, onClick }) => {
   return (
     <button
-      className={`btn fs-${med ? "med" : "big"} ${no_bg && "no-bg"} ${
-        block && "block"
-      }`}
+      className={`btn ${med ? "fs-med" : "fs-big"}${small ? "fs-small" : ""} ${
+        no_bg && "no-bg"
+      } ${block && "block"}`}
       onClick={() => {
         if (onClick) {
           onClick();
@@ -25,6 +25,7 @@ Btn.propTypes = {
   no_bg: PropTypes.bool,
   block: PropTypes.bool,
   med: PropTypes.bool,
+  small: PropTypes.bool,
   onClick: PropTypes.func,
 };
 

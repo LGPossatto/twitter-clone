@@ -23,7 +23,7 @@ const FeedHead = ({
         <div className="profile__img">
           <img src={profileImg} alt="profile" />
         </div>
-        <Btn text="Follow" no_bg med></Btn>
+        <Btn text="Edit" no_bg small></Btn>
         <div className="profile__info">
           <h2 className="fs-big">{name}</h2>
           <span className="fs-med fc-secondary">{email}</span>

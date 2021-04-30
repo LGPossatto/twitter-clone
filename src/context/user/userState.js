@@ -14,9 +14,11 @@ import {
   POST_USER_TWEETS,
   POST_COMMENT,
   POST_LIKE_TWEET,
+  POST_LIKE_COMMENT,
   DELETE_TWEET,
   DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
+  REMOVE_LIKE_COMMENT,
 } from "../types";
 
 const UserState = (props) => {
@@ -129,8 +131,6 @@ const UserState = (props) => {
         dispatch({ type: GET_USER_PROFILE_INFO, payload: profileDoc.data() });
         dispatch({ type: GET_USER_FOLLOWERS, payload: followerDoc.data() });
         dispatch({ type: GET_USER_FOLLOWING, payload: followingDoc.data() });
-
-        dispatch({ type: SAVE_SESSION });
       } else {
         console.log("No such document!");
       }
@@ -163,6 +163,7 @@ const UserState = (props) => {
       });
 
       dispatch({ type: GET_USER_TWEETS, payload: tweetsObj });
+      dispatch({ type: SAVE_SESSION });
     } catch (err) {
       console.error(err);
     }
@@ -183,7 +184,6 @@ const UserState = (props) => {
 
       commentsDoc.docs.map((doc) => {
         const docData = doc.data();
-        console.log(docData, docData.number);
 
         if (docData.number >= 0) {
           commentsObj["number"] = docData;
@@ -201,7 +201,7 @@ const UserState = (props) => {
   };
 
   //-----------------------------------------------------------------//
-  //------------------------(POST-LIKE-COMMENT)-TWEET------------------------//
+  //------------------------(POST-LIKE)-TWEET------------------------//
   //-----------------------------------------------------------------//
 
   // post new tweet
@@ -270,6 +270,52 @@ const UserState = (props) => {
     }
   };
 
+  // like tweet
+  const likeTweet = async (tweetID, tweetUID) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(`${tweetUID}`)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+    try {
+      tweetRef.update({
+        likes: firebase.firestore.FieldValue.arrayUnion(state.user.userUID),
+      });
+
+      dispatch({
+        type: POST_LIKE_TWEET,
+        payload: { tweetID, userUID: state.user.userUID },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // remove like from tweet
+  const removeLikeTweet = async (tweetID, tweetUID) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(`${tweetUID}`)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+    try {
+      tweetRef.update({
+        likes: firebase.firestore.FieldValue.arrayRemove(state.user.userUID),
+      });
+
+      dispatch({
+        type: REMOVE_LIKE_TWEET,
+        payload: { tweetID, userUID: state.user.userUID },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //-----------------------------------------------------------------//
+  //-----------------------(POST-LIKE)-COMMENT-----------------------//
+  //-----------------------------------------------------------------//
+
   // post new comment
   const commentTweet = async (comment) => {
     const tweetUserUID = comment.userUID;
@@ -316,15 +362,19 @@ const UserState = (props) => {
 
   // delete comment
   const deleteComment = async (tweetUserUID, tweetID, commentNumber) => {
+    const tweetRef = db
+      .collection("users")
+      .doc(tweetUserUID)
+      .collection("tweets")
+      .doc(`${tweetID}`);
+
     try {
-      await db
-        .collection("users")
-        .doc(tweetUserUID)
-        .collection("tweets")
-        .doc(`${tweetID}`)
-        .collection("comments")
-        .doc(`${commentNumber}`)
-        .delete();
+      await tweetRef.collection("comments").doc(`${commentNumber}`).delete();
+      await tweetRef.update({
+        comments: firebase.firestore.FieldValue.arrayRemove(
+          `${state.user.userUID}-${commentNumber}`
+        ),
+      });
 
       dispatch({
         type: DELETE_COMMENT,
@@ -335,42 +385,46 @@ const UserState = (props) => {
     }
   };
 
-  // like tweet
-  const likeTweet = async (tweetID, tweetUID) => {
-    const tweetRef = db
+  // like comment
+  const likeComment = async (tweetUID, tweetID, commentID) => {
+    const commentRef = db
       .collection("users")
       .doc(`${tweetUID}`)
       .collection("tweets")
-      .doc(`${tweetID}`);
+      .doc(`${tweetID}`)
+      .collection("comments")
+      .doc(`${commentID}`);
     try {
-      tweetRef.update({
+      commentRef.update({
         likes: firebase.firestore.FieldValue.arrayUnion(state.user.userUID),
       });
 
       dispatch({
-        type: POST_LIKE_TWEET,
-        payload: { tweetID, userUID: state.user.userUID },
+        type: POST_LIKE_COMMENT,
+        payload: { commentID, userUID: state.user.userUID },
       });
     } catch (err) {
       console.error(err);
     }
   };
 
-  // remove like from tweet
-  const removeLikeTweet = async (tweetID, tweetUID) => {
-    const tweetRef = db
+  // remove like from comment
+  const removeLikeComment = async (tweetUID, tweetID, commentID) => {
+    const commentRef = db
       .collection("users")
       .doc(`${tweetUID}`)
       .collection("tweets")
-      .doc(`${tweetID}`);
+      .doc(`${tweetID}`)
+      .collection("comments")
+      .doc(`${commentID}`);
     try {
-      tweetRef.update({
+      commentRef.update({
         likes: firebase.firestore.FieldValue.arrayRemove(state.user.userUID),
       });
 
       dispatch({
-        type: REMOVE_LIKE_TWEET,
-        payload: { tweetID, userUID: state.user.userUID },
+        type: REMOVE_LIKE_COMMENT,
+        payload: { commentID, userUID: state.user.userUID },
       });
     } catch (err) {
       console.error(err);
@@ -392,9 +446,11 @@ const UserState = (props) => {
         postTweet,
         commentTweet,
         likeTweet,
+        likeComment,
         deleteTweet,
         deleteComment,
         removeLikeTweet,
+        removeLikeComment,
       }}
     >
       {props.children}

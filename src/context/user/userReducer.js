@@ -8,9 +8,11 @@ import {
   POST_USER_TWEETS,
   POST_COMMENT,
   POST_LIKE_TWEET,
+  POST_LIKE_COMMENT,
   DELETE_TWEET,
   DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
+  REMOVE_LIKE_COMMENT,
 } from "../types";
 
 import { saveSession } from "../../utils/utils";
@@ -83,6 +85,20 @@ const userReducer = (state, action) => {
           },
         },
       };
+    case POST_LIKE_COMMENT:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.payload.commentID]: {
+            ...state.comments[action.payload.commentID],
+            likes: [
+              ...state.comments[action.payload.commentID].likes,
+              action.payload.userUID,
+            ],
+          },
+        },
+      };
     case DELETE_TWEET:
       const stateTweets = state.tweets;
       let newTweets = {};
@@ -101,6 +117,15 @@ const userReducer = (state, action) => {
         },
       };
     case DELETE_COMMENT:
+      // remove user uid in tweet comments list
+      const newCommentsUID = state.tweets[
+        action.payload.tweetID
+      ].comments.filter(
+        (comment) =>
+          comment !==
+          `${action.payload.tweetUserUID}-${action.payload.commentNumber}`
+      );
+      // remove comment in comments collection
       const stateComments = state.comments;
       let newComments = {};
       Object.keys(stateComments)
@@ -115,6 +140,13 @@ const userReducer = (state, action) => {
         });
       return {
         ...state,
+        tweets: {
+          ...state.tweets,
+          [action.payload.tweetID]: {
+            ...state.tweets[action.payload.tweetID],
+            comments: [...newCommentsUID],
+          },
+        },
         comments: {
           ...newComments,
         },
@@ -130,6 +162,20 @@ const userReducer = (state, action) => {
           [action.payload.tweetID]: {
             ...state.tweets[action.payload.tweetID],
             likes: [...newLikes],
+          },
+        },
+      };
+    case REMOVE_LIKE_COMMENT:
+      const newCommentLikes = state.comments[
+        action.payload.commentID
+      ].likes.filter((like) => like !== action.payload.userUID);
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.payload.commentID]: {
+            ...state.comments[action.payload.commentID],
+            likes: [...newCommentLikes],
           },
         },
       };
