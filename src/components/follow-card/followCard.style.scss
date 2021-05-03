@@ -20,5 +20,12 @@
 
   .info-box {
     flex-grow: 1;
+    max-width: 100%;
+
+    .info-text-box {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }

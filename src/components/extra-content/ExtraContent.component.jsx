@@ -7,9 +7,21 @@ const ExtraContent = () => {
   return (
     <div className="extra-content">
       <SideCard>
-        <FollowCard></FollowCard>
-        <FollowCard></FollowCard>
-        <FollowCard></FollowCard>
+        <FollowCard
+          userName={"Luiz Gustavo"}
+          login={"LGPossatto@gmail.com"}
+          userUID={"48OBK2oWW1ekydvM4fY8uiNXlUg1"}
+        ></FollowCard>
+        <FollowCard
+          userName={"Luiz Gustavo"}
+          login={"LGPossatto@gmail.com"}
+          userUID={"123"}
+        ></FollowCard>
+        <FollowCard
+          userName={"Luiz Gustavo"}
+          login={"LGPossatto@gmail.com"}
+          userUID={"123"}
+        ></FollowCard>
       </SideCard>
       <SideCard>
         <NewsCard img></NewsCard>

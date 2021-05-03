@@ -19,6 +19,8 @@ import {
   DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
   REMOVE_LIKE_COMMENT,
+  FOLLOW_USER,
+  UNFOLLOW_USER,
 } from "../types";
 
 const UserState = (props) => {
@@ -98,13 +100,13 @@ const UserState = (props) => {
         .doc(userUID)
         .collection("user-follow")
         .doc("following")
-        .set({ number: 0 });
+        .set({ number: 0, followingList: [] });
       await db
         .collection("users")
         .doc(userUID)
         .collection("tweets")
         .doc("number")
-        .set({ number: 0 });
+        .set({ number: 0, followerList: [] });
     } catch (err) {
       console.error(err);
     }
@@ -394,6 +396,7 @@ const UserState = (props) => {
       .doc(`${tweetID}`)
       .collection("comments")
       .doc(`${commentID}`);
+
     try {
       commentRef.update({
         likes: firebase.firestore.FieldValue.arrayUnion(state.user.userUID),
@@ -417,6 +420,7 @@ const UserState = (props) => {
       .doc(`${tweetID}`)
       .collection("comments")
       .doc(`${commentID}`);
+
     try {
       commentRef.update({
         likes: firebase.firestore.FieldValue.arrayRemove(state.user.userUID),
@@ -426,6 +430,46 @@ const UserState = (props) => {
         type: REMOVE_LIKE_COMMENT,
         payload: { commentID, userUID: state.user.userUID },
       });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //-----------------------------------------------------------------//
+  //---------------------(FOLLOW-UNFOLLOW)-USER----------------------//
+  //-----------------------------------------------------------------//
+
+  // follow user
+  const followUser = async (userUID) => {
+    try {
+      await db
+        .collection("users")
+        .doc(`${state.user.userUID}`)
+        .collection("user-follow")
+        .doc("following")
+        .update({
+          followingList: firebase.firestore.FieldValue.arrayUnion(userUID),
+        });
+
+      dispatch({ type: FOLLOW_USER, payload: userUID });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // unfollow user
+  const unfollowUser = async (userUID) => {
+    try {
+      await db
+        .collection("users")
+        .doc(`${state.user.userUID}`)
+        .collection("user-follow")
+        .doc("following")
+        .update({
+          followingList: firebase.firestore.FieldValue.arrayRemove(userUID),
+        });
+
+      dispatch({ type: UNFOLLOW_USER, payload: userUID });
     } catch (err) {
       console.error(err);
     }
@@ -451,6 +495,8 @@ const UserState = (props) => {
         deleteComment,
         removeLikeTweet,
         removeLikeComment,
+        followUser,
+        unfollowUser,
       }}
     >
       {props.children}

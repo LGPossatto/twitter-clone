@@ -13,6 +13,8 @@ import {
   DELETE_COMMENT,
   REMOVE_LIKE_TWEET,
   REMOVE_LIKE_COMMENT,
+  FOLLOW_USER,
+  UNFOLLOW_USER,
 } from "../types";
 
 import { saveSession } from "../../utils/utils";
@@ -177,6 +179,26 @@ const userReducer = (state, action) => {
             ...state.comments[action.payload.commentID],
             likes: [...newCommentLikes],
           },
+        },
+      };
+    case FOLLOW_USER:
+      return {
+        ...state,
+        following: {
+          ...state.following,
+          followingList: [...state.following.followingList, action.payload],
+        },
+      };
+    case UNFOLLOW_USER:
+      const newFollowingList = state.following.followingList.filter(
+        (item) => item !== action.payload
+      );
+
+      return {
+        ...state,
+        following: {
+          ...state.following,
+          followingList: [...newFollowingList],
         },
       };
     default:
