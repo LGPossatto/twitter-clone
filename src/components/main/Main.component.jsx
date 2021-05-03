@@ -1,4 +1,3 @@
-import React from "react";
 import ExtraContent from "../extra-content/ExtraContent.component";
 
 import "./main.style.scss";

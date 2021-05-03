@@ -1,0 +1,21 @@
+@import "../../assets/styles/variables.style.scss";
+
+.login-form {
+  width: 350px;
+  margin: 12px;
+
+  &__btn {
+    cursor: pointer;
+    background-color: $primary-color;
+    display: block;
+    width: calc(100% - 2rem);
+    padding: 0.5em 0.75em;
+    margin: 1rem;
+
+    border: 1px solid $primary-color;
+    border-radius: 2em;
+
+    text-align: center;
+    font-weight: 700;
+  }
+}

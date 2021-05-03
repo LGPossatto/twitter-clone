@@ -15,6 +15,7 @@ const Feed = () => {
     getUserTweets,
     tweets,
     postTweet,
+    logoutUser,
   } = useContext(UserContext);
 
   useEffect(() => {
@@ -26,7 +27,15 @@ const Feed = () => {
     <div className="feed">
       {user && followers && following ? (
         <>
-          <h2 className="feed__title fs-big">Home</h2>
+          <h2 className="feed__title fs-big flex jc-sb ai-c">
+            Home{" "}
+            <button
+              className="logout-btn fs-small fc-primary"
+              onClick={logoutUser}
+            >
+              Logout
+            </button>
+          </h2>
           <FeedHead
             user={user}
             followers={followers}

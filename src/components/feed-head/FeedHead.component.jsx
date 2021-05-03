@@ -11,8 +11,8 @@ import FollowNumberLink from "../../components/follow-number-link/FollowNumberLi
 
 const FeedHead = ({
   user: { name, email, bio, birthday, location, accountBd },
-  followers,
-  following,
+  followers: { followerList },
+  following: { followingList },
 }) => {
   return (
     <div className="feed-head">
@@ -38,13 +38,13 @@ const FeedHead = ({
           </div>
           <div className="follow-numbers">
             <FollowNumberLink
-              url="#!"
-              number={following.number}
+              url="following"
+              number={followingList.length}
               text="Following"
             ></FollowNumberLink>
             <FollowNumberLink
               url="#!"
-              number={followers.number}
+              number={followerList.length}
               text="Followers"
             ></FollowNumberLink>
           </div>

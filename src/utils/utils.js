@@ -38,3 +38,7 @@ export const getMonthAndDay = (date) => {
 export const saveSession = (state) => {
   window.sessionStorage.setItem("loggin", JSON.stringify(state));
 };
+
+export const removeSession = () => {
+  window.sessionStorage.removeItem("loggin");
+};

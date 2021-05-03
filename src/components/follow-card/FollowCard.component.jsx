@@ -8,7 +8,7 @@ import profileImg from "../../assets/images/twiter-profile.jpg";
 import Btn from "../btn/Btn.component";
 
 const FollowCard = ({ userName, login, userUID }) => {
-  const { following, followUser, unfollowUser } = useContext(UserContext);
+  const { following, followUser, unfollowUser, user } = useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const followFunc = () => {
@@ -25,7 +25,7 @@ const FollowCard = ({ userName, login, userUID }) => {
     } else {
       setIsFollowing(false);
     }
-  }, [following]);
+  }, [following, userUID]);
 
   return (
     <div className="follow-card flex ai-c">
@@ -37,13 +37,15 @@ const FollowCard = ({ userName, login, userUID }) => {
           <h2 className="fs-med">{userName}</h2>
           <span className="fs-med fc-secondary">{login}</span>
         </div>
-        <Btn
-          text={`${isFollowing ? "Unfollow" : "Follow"}`}
-          onClick={followFunc}
-          no_bg={!isFollowing}
-          med
-          isFollowing
-        ></Btn>
+        {user.userUID !== userUID && (
+          <Btn
+            text={`${isFollowing ? "Unfollow" : "Follow"}`}
+            onClick={followFunc}
+            no_bg={!isFollowing}
+            med
+            isFollowing
+          ></Btn>
+        )}
       </div>
     </div>
   );

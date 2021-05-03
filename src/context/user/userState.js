@@ -6,6 +6,7 @@ import firebase from "firebase";
 import { toUTC } from "../../utils/utils";
 import {
   SAVE_SESSION,
+  USER_LOGOUT,
   GET_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
@@ -48,7 +49,7 @@ const UserState = (props) => {
   //----------------------(LOG-CREATE-GET)-USER----------------------//
   //-----------------------------------------------------------------//
 
-  // log in user
+  // login user
   const loginWithEmail = async (email, password) => {
     try {
       const userCredential = await firebase
@@ -56,6 +57,17 @@ const UserState = (props) => {
         .signInWithEmailAndPassword(email, password);
 
       getUserInfo(userCredential.user.uid);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // logout user
+  const logoutUser = async (email, password) => {
+    try {
+      await firebase.auth().signOut();
+
+      dispatch({ type: USER_LOGOUT });
     } catch (err) {
       console.error(err);
     }
@@ -450,6 +462,16 @@ const UserState = (props) => {
         .update({
           followingList: firebase.firestore.FieldValue.arrayUnion(userUID),
         });
+      await db
+        .collection("users")
+        .doc(`${userUID}`)
+        .collection("user-follow")
+        .doc("followers")
+        .update({
+          followerList: firebase.firestore.FieldValue.arrayUnion(
+            state.user.userUID
+          ),
+        });
 
       dispatch({ type: FOLLOW_USER, payload: userUID });
     } catch (err) {
@@ -468,8 +490,18 @@ const UserState = (props) => {
         .update({
           followingList: firebase.firestore.FieldValue.arrayRemove(userUID),
         });
+      await db
+        .collection("users")
+        .doc(`${userUID}`)
+        .collection("user-follow")
+        .doc("followers")
+        .update({
+          followerList: firebase.firestore.FieldValue.arrayRemove(
+            state.user.userUID
+          ),
+        });
 
-      dispatch({ type: UNFOLLOW_USER, payload: userUID });
+      dispatch({ type: UNFOLLOW_USER, payload: state.user.userUID });
     } catch (err) {
       console.error(err);
     }
@@ -483,6 +515,7 @@ const UserState = (props) => {
         following: state.following,
         tweets: state.tweets,
         comments: state.comments,
+        logoutUser,
         loginWithEmail,
         createAccount,
         getUserTweets,

@@ -1,5 +1,6 @@
 import {
   SAVE_SESSION,
+  USER_LOGOUT,
   GET_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
@@ -17,13 +18,22 @@ import {
   UNFOLLOW_USER,
 } from "../types";
 
-import { saveSession } from "../../utils/utils";
+import { saveSession, removeSession } from "../../utils/utils";
 
 const userReducer = (state, action) => {
   switch (action.type) {
     case SAVE_SESSION:
       saveSession(state);
       return state;
+    case USER_LOGOUT:
+      removeSession();
+      return {
+        user: null,
+        following: null,
+        followers: null,
+        tweets: null,
+        comments: null,
+      };
     case GET_USER_PROFILE_INFO:
       return {
         ...state,

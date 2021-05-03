@@ -4,9 +4,10 @@ import UserContext from "../../context/user/userContext";
 
 import "./login.style.scss";
 import Form from "../../components/form/Form.component";
+import LoginForm from "../../components/login-form/LoginForm.component";
 
 const Login = () => {
-  const { createAccount, loginWithEmail } = useContext(UserContext);
+  const { createAccount } = useContext(UserContext);
 
   const [signIn, setSignIn] = useState(false);
 
@@ -41,15 +42,7 @@ const Login = () => {
           ]}
         ></Form>
       ) : (
-        <Form
-          title="Log in to Twitter"
-          btnText={"Login In"}
-          onSubmit={loginWithEmail}
-          emailState={signInEmail}
-          setEmailState={setSignInEmail}
-          passwordState={signInPassword}
-          setPasswordState={setSignInPassword}
-        ></Form>
+        <LoginForm></LoginForm>
       )}
       <span className="fs-small fc-primary" onClick={() => setSignIn(!signIn)}>
         {signIn ? "Log in to Twitter" : "Create an Account"}

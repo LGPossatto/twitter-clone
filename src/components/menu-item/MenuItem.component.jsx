@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import "./menuItem.style.scss";
 
-const MenuItem = ({ icon, text }) => {
+const MenuItem = ({ icon, text, url }) => {
   return (
-    <Link to={`/${text}`} className="menu-item flex ai-c">
+    <Link to={`/${url}`} className="menu-item flex ai-c">
       {icon && <i className={`fs-big ${icon}`}></i>}
       <span className="fs-big">{text}</span>
     </Link>
@@ -15,6 +15,7 @@ const MenuItem = ({ icon, text }) => {
 MenuItem.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 export default MenuItem;

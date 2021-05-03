@@ -1,5 +1,3 @@
-import React from "react";
-
 import "./home.style.scss";
 import MenuBar from "../../components/menu-bar/MenuBar.component";
 import Main from "../../components/main/Main.component";
