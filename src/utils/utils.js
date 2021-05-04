@@ -35,6 +35,27 @@ export const getMonthAndDay = (date) => {
       ${" "}${localDate.getFullYear()}`;
 };
 
+export const toTitleCase = (text) => {
+  let newText = "";
+  const newTextList = text.split(" ");
+
+  for (let i = 0; i < newTextList.length; i++) {
+    const titleWord = `${newTextList[i].slice(0, 1).toUpperCase()}${newTextList[
+      i
+    ]
+      .slice(1, newTextList[i].length)
+      .toLowerCase()}`;
+
+    if (i === 0) {
+      newText = `${titleWord}`;
+    } else {
+      newText = `${newText} ${titleWord}`;
+    }
+  }
+
+  return newText;
+};
+
 export const saveSession = (state) => {
   window.sessionStorage.setItem("loggin", JSON.stringify(state));
 };

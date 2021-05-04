@@ -1,49 +1,15 @@
-import { useState, useContext } from "react";
-
-import UserContext from "../../context/user/userContext";
+import { useState } from "react";
 
 import "./login.style.scss";
-import Form from "../../components/form/Form.component";
 import LoginForm from "../../components/login-form/LoginForm.component";
+import SigninForm from "../../components/signin-form/SigninForm.component";
 
 const Login = () => {
-  const { createAccount } = useContext(UserContext);
-
   const [signIn, setSignIn] = useState(false);
-
-  // login to accoutn
-  const [logInEmail, setLogInEmail] = useState("");
-  const [logInPassword, setLogInPassword] = useState("");
-
-  // create new account
-  const [signInEmail, setSignInEmail] = useState("");
-  const [signInPassword, setSignInPassword] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userBio, setUserBio] = useState("");
-  const [userBd, setUserBd] = useState("");
-  const [userCity, setUserCity] = useState("");
 
   return (
     <div className="login flex flex-fd-c flex-fw-w jc-c ai-c">
-      {signIn ? (
-        <Form
-          title="Create an Account"
-          btnText={"Sign In"}
-          onSubmit={createAccount}
-          emailState={logInEmail}
-          setEmailState={setLogInEmail}
-          passwordState={logInPassword}
-          setPasswordState={setLogInPassword}
-          profileInfo={[
-            [userName, setUserName, "Name"],
-            [userBio, setUserBio, "Say something about you"],
-            [userBd, setUserBd, "Birthday (dd/mm/yyyy)"],
-            [userCity, setUserCity, "What city are you in right now?"],
-          ]}
-        ></Form>
-      ) : (
-        <LoginForm></LoginForm>
-      )}
+      {signIn ? <SigninForm></SigninForm> : <LoginForm></LoginForm>}
       <span className="fs-small fc-primary" onClick={() => setSignIn(!signIn)}>
         {signIn ? "Log in to Twitter" : "Create an Account"}
       </span>

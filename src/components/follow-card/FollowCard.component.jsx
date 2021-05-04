@@ -41,7 +41,7 @@ const FollowCard = ({ userName, login, userUID }) => {
           <Btn
             text={`${isFollowing ? "Unfollow" : "Follow"}`}
             onClick={followFunc}
-            no_bg={!isFollowing}
+            no_bg={isFollowing}
             med
             isFollowing
           ></Btn>

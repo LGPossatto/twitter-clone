@@ -74,13 +74,27 @@ const UserState = (props) => {
   };
 
   // create user account
-  const createAccount = async (email, password, profileInfo) => {
+  const createAccount = async (
+    signInEmail,
+    signInPassword,
+    userName,
+    userBio,
+    userBd,
+    userCity
+  ) => {
     try {
       const userCredential = await firebase
         .auth()
-        .createUserWithEmailAndPassword(email, password);
+        .createUserWithEmailAndPassword(signInEmail, signInPassword);
 
-      await createUserDb(userCredential.user.uid, email, profileInfo);
+      await createUserDb(
+        userCredential.user.uid,
+        signInEmail,
+        userName,
+        userBio,
+        userBd,
+        userCity
+      );
       getUserInfo(userCredential.user.uid);
     } catch (err) {
       console.error(err);
@@ -88,14 +102,21 @@ const UserState = (props) => {
   };
 
   // create new user database
-  const createUserDb = async (userUID, email, profileInfo) => {
+  const createUserDb = async (
+    userUID,
+    signInEmail,
+    userName,
+    userBio,
+    userBd,
+    userCity
+  ) => {
     const profileObj = {
       userUID: userUID,
-      name: profileInfo[0][0],
-      email: email,
-      bio: profileInfo[1][0],
-      birthday: profileInfo[2][0],
-      location: profileInfo[3][0],
+      name: userName,
+      email: signInEmail,
+      bio: userBio,
+      birthday: userBd,
+      location: userCity,
       accountBd: toUTC(new Date()),
     };
 
@@ -106,7 +127,7 @@ const UserState = (props) => {
         .doc(userUID)
         .collection("user-follow")
         .doc("followers")
-        .set({ number: 0 });
+        .set({ number: 0, followerList: [] });
       await db
         .collection("users")
         .doc(userUID)
@@ -118,7 +139,7 @@ const UserState = (props) => {
         .doc(userUID)
         .collection("tweets")
         .doc("number")
-        .set({ number: 0, followerList: [] });
+        .set({ number: 0 });
     } catch (err) {
       console.error(err);
     }
@@ -145,6 +166,30 @@ const UserState = (props) => {
         dispatch({ type: GET_USER_PROFILE_INFO, payload: profileDoc.data() });
         dispatch({ type: GET_USER_FOLLOWERS, payload: followerDoc.data() });
         dispatch({ type: GET_USER_FOLLOWING, payload: followingDoc.data() });
+      } else {
+        console.log("No such document!");
+      }
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+  };
+
+  // get follow info
+  const getFollowInfo = async (userUID) => {
+    try {
+      const profileFollowDoc = await db.collection("users").doc(userUID).get();
+      const followersFollowDoc = await db
+        .collection("users")
+        .doc(userUID)
+        .collection("user-follow")
+        .doc("followers")
+        .get();
+
+      if (profileFollowDoc.exists && followersFollowDoc.exists) {
+        return {
+          profileFollow: profileFollowDoc.data(),
+          followersFollow: followersFollowDoc.data(),
+        };
       } else {
         console.log("No such document!");
       }
@@ -501,7 +546,7 @@ const UserState = (props) => {
           ),
         });
 
-      dispatch({ type: UNFOLLOW_USER, payload: state.user.userUID });
+      dispatch({ type: UNFOLLOW_USER, payload: userUID });
     } catch (err) {
       console.error(err);
     }
@@ -520,6 +565,7 @@ const UserState = (props) => {
         createAccount,
         getUserTweets,
         getTweetComments,
+        getFollowInfo,
         postTweet,
         commentTweet,
         likeTweet,
