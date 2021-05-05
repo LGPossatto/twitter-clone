@@ -27,7 +27,7 @@ const ProfileCard = ({ userUID }) => {
   };
 
   useEffect(() => {
-    setFollowInfo(getFollowInfo(userUID));
+    getFollowInfo(userUID).then((item) => setFollowInfo(item));
     // eslint-disable-next-line
   }, []);
 
@@ -48,12 +48,14 @@ const ProfileCard = ({ userUID }) => {
         <div className="profile-card__info flex jc-sb ai-c">
           <div className="">
             <div className="profile-card__title flex">
-              <h2 className="fs-med">{profileFollow.name}</h2>
-              <span className="fs-med fc-secondary">{profileFollow.email}</span>
+              <h2 className="fs-med">{followInfo.profileFollow.name}</h2>
+              <span className="fs-med fc-secondary">
+                {followInfo.profileFollow.email}
+              </span>
             </div>
-            <p className="fs-med bio">{profileFollow.bio}</p>
+            <p className="fs-med bio">{followInfo.profileFollow.bio}</p>
             <span className="fs-med">
-              {followersFollow.followerList.length}{" "}
+              {followInfo.followersFollow.followerList.length}{" "}
               <span className="fc-secondary">{"Followers"}</span>
             </span>
           </div>

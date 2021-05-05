@@ -10,7 +10,7 @@ import ProfileCard from "../../components/profile-card/ProfileCard.component";
 const Follow = () => {
   const {
     following: { followingList },
-    followers: { followersList },
+    followers: { followerList },
   } = useContext(UserContext);
   const [followList, setFollowList] = useState([]);
   const { follow } = useParams();
@@ -19,7 +19,7 @@ const Follow = () => {
     if (follow === "following") {
       setFollowList(followingList);
     } else if (follow === "followers") {
-      setFollowList(followersList);
+      setFollowList(followerList);
     }
     // eslint-disable-next-line
   }, []);
@@ -34,7 +34,7 @@ const Follow = () => {
           </Link>
         </h2>
         {followList.map((item) => (
-          <ProfileCard userUID={item}></ProfileCard>
+          <ProfileCard key={item} userUID={item}></ProfileCard>
         ))}
       </div>
     </div>
