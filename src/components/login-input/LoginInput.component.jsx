@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 
 import "./loginInput.style.scss";
 
-const LoginInput = ({ state, setState, inputName, type, ctrlClass }) => {
+const LoginInput = ({
+  state,
+  setState,
+  inputName,
+  type,
+  ctrlClass,
+  small,
+  charLimit = 154,
+}) => {
   const [active, setActive] = useState(false);
   const inputRef = useRef(null);
 
@@ -30,7 +38,9 @@ const LoginInput = ({ state, setState, inputName, type, ctrlClass }) => {
 
   return (
     <div
-      className={`login-input ${ctrlClass} ${active ? "active" : ""}`}
+      className={`login-input ${ctrlClass} ${active ? "active" : ""} ${
+        small ? "small" : ""
+      }`}
       onClick={() => inputRef.current.focus()}
     >
       <label
@@ -47,7 +57,11 @@ const LoginInput = ({ state, setState, inputName, type, ctrlClass }) => {
         value={state}
         ref={inputRef}
         onChange={(e) => {
-          setState(e.target.value);
+          if (state.length < charLimit) {
+            setState(e.target.value);
+          } else if (!e.nativeEvent.data) {
+            setState(e.target.value);
+          }
         }}
       />
     </div>
@@ -60,6 +74,8 @@ LoginInput.propTypes = {
   inputName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   ctrlClass: PropTypes.string.isRequired,
+  small: PropTypes.bool,
+  charLimit: PropTypes.number,
 };
 
 export default LoginInput;

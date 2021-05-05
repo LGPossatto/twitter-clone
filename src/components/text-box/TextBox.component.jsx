@@ -33,7 +33,13 @@ const TextBox = ({ placeholder, btnText, img, postMsg }) => {
           className="fs-med"
           name="tweet"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            if (message.length < 154) {
+              setMessage(e.target.value);
+            } else if (!e.nativeEvent.data) {
+              setMessage(e.target.value);
+            }
+          }}
           placeholder={placeholder}
         ></textarea>
         <Btn med block text={btnText} onClick={onClick}></Btn>

@@ -12,6 +12,7 @@ const LoginForm = () => {
 
   return (
     <form className="login-form">
+      <i className="fab fa-twitter fs-biggest"></i>
       <h2 className="fs-bigger">{"Log in to Twitter"}</h2>
       <LoginInput
         state={logInEmail}

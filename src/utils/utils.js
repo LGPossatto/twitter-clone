@@ -35,6 +35,10 @@ export const getMonthAndDay = (date) => {
       ${" "}${localDate.getFullYear()}`;
 };
 
+export const leapYear = (year) => {
+  return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+};
+
 export const toTitleCase = (text) => {
   let newText = "";
   const newTextList = text.split(" ");
