@@ -1,9 +1,12 @@
 @import "../../assets/styles/variables.style.scss";
 
 .feed-menu-item {
+  cursor: pointer;
+  background-color: $black;
   padding: 12px;
   flex-grow: 1;
 
+  border: none;
   border-bottom: 1px solid $secondary-color-dark;
 
   text-align: center;

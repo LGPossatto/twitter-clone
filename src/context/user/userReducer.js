@@ -5,6 +5,7 @@ import {
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
+  GET_FOLLOW_TWEETS,
   GET_COMMENTS,
   POST_USER_TWEETS,
   POST_COMMENT,
@@ -53,6 +54,8 @@ const userReducer = (state, action) => {
       return { ...state, following: action.payload };
     case GET_USER_TWEETS:
       return { ...state, tweets: action.payload };
+    case GET_FOLLOW_TWEETS:
+      return { ...state, tweets: { ...state.tweets, ...action.payload } };
     case GET_COMMENTS:
       return { ...state, comments: action.payload };
     case POST_USER_TWEETS:

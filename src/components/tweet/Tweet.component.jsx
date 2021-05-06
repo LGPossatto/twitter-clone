@@ -11,7 +11,9 @@ import TweetBtn from "../tweet-btn/TweetBtn.component";
 import MoreBtn from "../more-btn/MoreBtn.component";
 
 const Tweet = ({ tweet }) => {
-  const { likeTweet, removeLikeTweet, deleteTweet } = useContext(UserContext);
+  const { user, likeTweet, removeLikeTweet, deleteTweet } = useContext(
+    UserContext
+  );
   const {
     userName,
     userEmail,
@@ -29,15 +31,23 @@ const Tweet = ({ tweet }) => {
   };
 
   const postLike = () => {
-    likeTweet(tweetID, userUID);
+    if (user.userUID === userUID) {
+      likeTweet(tweetID, userUID, true);
+    } else {
+      likeTweet(tweetID, userUID, false);
+    }
   };
 
   const removeLike = () => {
-    removeLikeTweet(tweetID, userUID);
+    if (user.userUID === userUID) {
+      removeLikeTweet(tweetID, userUID, true);
+    } else {
+      removeLikeTweet(tweetID, userUID, false);
+    }
   };
 
   const postComment = () => {
-    console.log("to comment");
+    console.log("post comment");
   };
 
   return (

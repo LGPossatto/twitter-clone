@@ -9,13 +9,17 @@ import TextBox from "../../components/text-box/TextBox.component";
 import TweetComment from "../../components/tweet-comment/TweetComment.component";
 
 const Comment = () => {
-  const { tweets, comments, getTweetComments, commentTweet } = useContext(
+  const { user, tweets, comments, getTweetComments, commentTweet } = useContext(
     UserContext
   );
   const { userUID, tweetID } = useParams();
 
   useEffect(() => {
-    getTweetComments(userUID, tweetID);
+    if (userUID === user.userUID) {
+      getTweetComments(userUID, tweetID);
+    } else {
+      getTweetComments(userUID, tweetID.split("-")[1]);
+    }
     // eslint-disable-next-line
   }, []);
 

@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import UserContext from "../../context/user/userContext";
 
 import "./feed.style.scss";
@@ -13,13 +13,24 @@ const Feed = () => {
     followers,
     following,
     getUserTweets,
+    getFollowTweets,
     tweets,
     postTweet,
     logoutUser,
   } = useContext(UserContext);
+  const [active, setActive] = useState(true);
+
+  const setFeedActive = () => {
+    setActive(true);
+  };
+
+  const setTweetActive = () => {
+    setActive(false);
+  };
 
   useEffect(() => {
     getUserTweets(user.userUID);
+    getFollowTweets();
     // eslint-disable-next-line
   }, []);
 
@@ -42,8 +53,16 @@ const Feed = () => {
             following={following}
           ></FeedHead>
           <div className="feed__menu flex jc-sb">
-            <FeedMenuItem url="#!" text="Feed" active></FeedMenuItem>
-            <FeedMenuItem url="#!" text="Tweets"></FeedMenuItem>
+            <FeedMenuItem
+              text="Feed"
+              active={active}
+              setActive={setFeedActive}
+            ></FeedMenuItem>
+            <FeedMenuItem
+              text="Tweets"
+              active={!active}
+              setActive={setTweetActive}
+            ></FeedMenuItem>
           </div>
           <TextBox
             placeholder={"What is happening..."}

@@ -1,23 +1,22 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import "./feedMenuItem.style.scss";
 
-const FeedMenuItem = ({ text, url, active }) => {
+const FeedMenuItem = ({ text, active, setActive }) => {
   return (
-    <Link
-      to={url}
+    <button
+      onClick={setActive}
       className={`feed-menu-item fs-med ${active ? "active" : ""}`}
     >
       {text}
-    </Link>
+    </button>
   );
 };
 
 FeedMenuItem.propTypes = {
   text: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-  active: PropTypes.bool,
+  active: PropTypes.bool.isRequired,
+  setActive: PropTypes.func.isRequired,
 };
 
 export default FeedMenuItem;

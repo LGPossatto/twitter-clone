@@ -11,6 +11,7 @@ import {
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
+  GET_FOLLOW_TWEETS,
   GET_COMMENTS,
   POST_USER_TWEETS,
   POST_COMMENT,
@@ -228,6 +229,44 @@ const UserState = (props) => {
     }
   };
 
+  // get follow tweets
+  const getFollowTweets = async (userFollowUID) => {
+    try {
+      let followTweetsDoc = null;
+      let followTweetsObj = {};
+      let newTweetID = "";
+
+      state.following.followingList.map(async (userFollowUID) => {
+        followTweetsDoc = await db
+          .collection("users")
+          .doc(userFollowUID)
+          .collection("tweets")
+          .get();
+
+        followTweetsObj = {};
+
+        followTweetsDoc.docs.map((doc) => {
+          const followDocData = doc.data();
+
+          if (!followDocData.number) {
+            newTweetID = `${userFollowUID}-${followDocData.tweetID}`;
+            followTweetsObj[newTweetID] = {
+              ...followDocData,
+              tweetID: newTweetID,
+            };
+          }
+          return null;
+        });
+
+        dispatch({ type: GET_FOLLOW_TWEETS, payload: followTweetsObj });
+        return null;
+      });
+      dispatch({ type: SAVE_SESSION });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // get tweet comments
   const getTweetComments = async (tweetUserUID, tweetID) => {
     try {
@@ -330,12 +369,23 @@ const UserState = (props) => {
   };
 
   // like tweet
-  const likeTweet = async (tweetID, tweetUID) => {
-    const tweetRef = db
-      .collection("users")
-      .doc(`${tweetUID}`)
-      .collection("tweets")
-      .doc(`${tweetID}`);
+  const likeTweet = async (tweetID, tweetUID, myTweet) => {
+    let tweetRef = null;
+
+    if (myTweet) {
+      tweetRef = db
+        .collection("users")
+        .doc(`${tweetUID}`)
+        .collection("tweets")
+        .doc(`${tweetID}`);
+    } else {
+      tweetRef = db
+        .collection("users")
+        .doc(`${tweetUID}`)
+        .collection("tweets")
+        .doc(`${tweetID.split("-")[1]}`);
+    }
+
     try {
       tweetRef.update({
         likes: firebase.firestore.FieldValue.arrayUnion(state.user.userUID),
@@ -351,12 +401,23 @@ const UserState = (props) => {
   };
 
   // remove like from tweet
-  const removeLikeTweet = async (tweetID, tweetUID) => {
-    const tweetRef = db
-      .collection("users")
-      .doc(`${tweetUID}`)
-      .collection("tweets")
-      .doc(`${tweetID}`);
+  const removeLikeTweet = async (tweetID, tweetUID, myTweet) => {
+    let tweetRef = null;
+
+    if (myTweet) {
+      tweetRef = db
+        .collection("users")
+        .doc(`${tweetUID}`)
+        .collection("tweets")
+        .doc(`${tweetID}`);
+    } else {
+      tweetRef = db
+        .collection("users")
+        .doc(`${tweetUID}`)
+        .collection("tweets")
+        .doc(`${tweetID.split("-")[1]}`);
+    }
+
     try {
       tweetRef.update({
         likes: firebase.firestore.FieldValue.arrayRemove(state.user.userUID),
@@ -564,6 +625,7 @@ const UserState = (props) => {
         loginWithEmail,
         createAccount,
         getUserTweets,
+        getFollowTweets,
         getTweetComments,
         getFollowInfo,
         postTweet,
