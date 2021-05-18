@@ -9,17 +9,12 @@ import TextBox from "../../components/text-box/TextBox.component";
 import TweetComment from "../../components/tweet-comment/TweetComment.component";
 
 const Comment = () => {
-  const { user, tweets, comments, getTweetComments, commentTweet } = useContext(
-    UserContext
-  );
+  const { user, tweets, comments, getTweetComments, commentTweet } =
+    useContext(UserContext);
   const { userUID, tweetID } = useParams();
 
   useEffect(() => {
-    if (userUID === user.userUID) {
-      getTweetComments(userUID, tweetID);
-    } else {
-      getTweetComments(userUID, tweetID.split("-")[1]);
-    }
+    getTweetComments(userUID, tweetID.split("-")[1]);
     // eslint-disable-next-line
   }, []);
 
@@ -32,7 +27,11 @@ const Comment = () => {
             <i className="fas fa-times fs-big close-comment"></i>
           </Link>
         </h2>
-        <Tweet tweet={tweets[tweetID]}></Tweet>
+        {userUID === user.userUID ? (
+          <Tweet tweet={tweets[tweetID.split("-")[1]]}></Tweet>
+        ) : (
+          <Tweet tweet={tweets[tweetID]}></Tweet>
+        )}
         <TextBox
           placeholder={"Leave a comment..."}
           btnText={"Comment"}

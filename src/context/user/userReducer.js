@@ -68,6 +68,8 @@ const userReducer = (state, action) => {
         },
       };
     case POST_COMMENT:
+      console.log(action.payload.tweetNumber, action.payload.commentsListID);
+      console.log(state.tweets[`${action.payload.tweetNumber}`]);
       return {
         ...state,
         tweets: {

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { getMonthAndDay } from "../../utils/utils";
@@ -11,9 +11,8 @@ import TweetBtn from "../tweet-btn/TweetBtn.component";
 import MoreBtn from "../more-btn/MoreBtn.component";
 
 const Tweet = ({ tweet }) => {
-  const { user, likeTweet, removeLikeTweet, deleteTweet } = useContext(
-    UserContext
-  );
+  const { user, likeTweet, removeLikeTweet, deleteTweet } =
+    useContext(UserContext);
   const {
     userName,
     userEmail,
@@ -25,6 +24,7 @@ const Tweet = ({ tweet }) => {
     comments,
   } = tweet;
   const urlParams = useParams();
+  const history = useHistory();
 
   const removeTweet = () => {
     deleteTweet(tweetID);
@@ -47,7 +47,11 @@ const Tweet = ({ tweet }) => {
   };
 
   const postComment = () => {
-    console.log("post comment");
+    if (userUID === user.userUID) {
+      history.push(`/user/${userUID}/tweet/tweetID-${tweetID}`);
+    } else {
+      history.push(`/user/${userUID}/tweet/${tweetID}`);
+    }
   };
 
   return (
@@ -63,7 +67,9 @@ const Tweet = ({ tweet }) => {
               {userEmail} - {getMonthAndDay(date)}
             </span>
           </h2>
-          {!urlParams.tweetID && <MoreBtn onClick={removeTweet}></MoreBtn>}
+          {!urlParams.tweetID && userUID === user.userUID && (
+            <MoreBtn onClick={removeTweet}></MoreBtn>
+          )}
         </div>
         <p className="fs-med msg">{message}</p>
         <div className="tweet-btns flex ai-c">
@@ -73,7 +79,6 @@ const Tweet = ({ tweet }) => {
               userUID={userUID}
               toPost={postComment}
               toRemove={postComment}
-              url={`/user/${userUID}/tweet/${tweetID}`}
               type="reply"
               icon="fas fa-comment-dots"
             ></TweetBtn>
@@ -83,7 +88,6 @@ const Tweet = ({ tweet }) => {
             userUID={userUID}
             toPost={postLike}
             toRemove={removeLike}
-            url="#!"
             type="likes"
             icon="fas fa-heart"
           ></TweetBtn>

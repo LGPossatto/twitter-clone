@@ -11,30 +11,30 @@ import TweetBtn from "../tweet-btn/TweetBtn.component";
 import MoreBtn from "../more-btn/MoreBtn.component";
 
 const TweetComment = ({ comment }) => {
-  const { deleteComment, likeComment, removeLikeComment } = useContext(
-    UserContext
-  );
-  const {
-    userName,
-    userEmail,
-    message,
-    date,
-    likes,
-    userUID,
-    commentID,
-  } = comment;
+  const { user, deleteComment, likeComment, removeLikeComment } =
+    useContext(UserContext);
+  const { userName, userEmail, message, date, likes, userUID, commentID } =
+    comment;
   const urlParams = useParams();
 
   const removeComment = () => {
-    deleteComment(urlParams.userUID, urlParams.tweetID, commentID);
+    deleteComment(
+      urlParams.userUID,
+      urlParams.tweetID.split("-")[1],
+      commentID
+    );
   };
 
   const postLike = () => {
-    likeComment(urlParams.userUID, urlParams.tweetID, commentID);
+    likeComment(urlParams.userUID, urlParams.tweetID.split("-")[1], commentID);
   };
 
   const removeLike = () => {
-    removeLikeComment(urlParams.userUID, urlParams.tweetID, commentID);
+    removeLikeComment(
+      urlParams.userUID,
+      urlParams.tweetID.split("-")[1],
+      commentID
+    );
   };
 
   return (
@@ -50,7 +50,9 @@ const TweetComment = ({ comment }) => {
               {userEmail} - {getMonthAndDay(date)}
             </span>
           </h2>
-          <MoreBtn onClick={removeComment}></MoreBtn>
+          {userUID === user.userUID && (
+            <MoreBtn onClick={removeComment}></MoreBtn>
+          )}
         </div>
         <p className="fs-med msg">{message}</p>
         <div className="tweet-comment-btns flex ai-c">
@@ -59,7 +61,6 @@ const TweetComment = ({ comment }) => {
             userUID={userUID}
             toPost={postLike}
             toRemove={removeLike}
-            url="#!"
             type="likes"
             icon="fas fa-heart"
           ></TweetBtn>

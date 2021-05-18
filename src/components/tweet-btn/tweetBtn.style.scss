@@ -1,7 +1,11 @@
 @import "../../assets/styles/variables.style.scss";
 
 .tweet-btn {
+  cursor: pointer;
+  background-color: transparent;
   margin-left: 12px;
+
+  border: none;
 
   i {
     margin-right: 4px;

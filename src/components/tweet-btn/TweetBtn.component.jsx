@@ -1,20 +1,11 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import UserContext from "../../context/user/userContext";
 
 import "./tweetBtn.style.scss";
 
-const TweetBtn = ({
-  url,
-  type,
-  icon,
-  usersList,
-  userUID,
-  toPost,
-  toRemove,
-}) => {
+const TweetBtn = ({ type, icon, usersList, userUID, toPost, toRemove }) => {
   const { user } = useContext(UserContext);
   const [active, setActive] = useState(false);
 
@@ -24,11 +15,10 @@ const TweetBtn = ({
     } else {
       setActive(false);
     }
-  }, [usersList, userUID]);
+  }, [usersList, userUID, user.userUID]);
 
   return (
-    <Link
-      to={url}
+    <button
       onClick={() => {
         if (active) {
           toRemove();
@@ -42,12 +32,11 @@ const TweetBtn = ({
     >
       <i className={`fs-med fc-secondary ${icon}`}></i>
       {usersList.length}
-    </Link>
+    </button>
   );
 };
 
 TweetBtn.propTypes = {
-  url: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   usersList: PropTypes.array.isRequired,

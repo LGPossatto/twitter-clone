@@ -1,6 +1,8 @@
 import { useEffect, useContext, useState } from "react";
 import UserContext from "../../context/user/userContext";
 
+import { sortObj } from "../../utils/utils";
+
 import "./feed.style.scss";
 import FeedHead from "../feed-head/FeedHead.component";
 import FeedMenuItem from "../feed-menu-item/FeedMenuItem.component";
@@ -73,20 +75,9 @@ const Feed = () => {
         </>
       ) : null}
       {tweets &&
-        Object.keys(tweets)
-          .reverse()
-          .map((tweet) => {
-            if (tweet === "number") {
-              return null;
-            } else {
-              return (
-                <Tweet
-                  key={tweets[tweet].tweetID}
-                  tweet={tweets[tweet]}
-                ></Tweet>
-              );
-            }
-          })}
+        sortObj(tweets).map((tweet) => {
+          return <Tweet key={tweet[1].tweetID} tweet={tweet[1]}></Tweet>;
+        })}
     </div>
   );
 };

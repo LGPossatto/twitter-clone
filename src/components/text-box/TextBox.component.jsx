@@ -14,7 +14,12 @@ const TextBox = ({ placeholder, btnText, img, postMsg }) => {
 
   const onClick = () => {
     if (tweetID) {
-      postMsg({ message: message, date: toUTC(new Date()), userUID, tweetID });
+      postMsg({
+        message: message,
+        date: toUTC(new Date()),
+        userUID,
+        tweetID: tweetID.split("-")[1],
+      });
     } else {
       postMsg({ message: message, date: toUTC(new Date()) });
     }

@@ -471,10 +471,22 @@ const UserState = (props) => {
         comments: firebase.firestore.FieldValue.arrayUnion(commentsListID),
       });
 
-      dispatch({
-        type: POST_COMMENT,
-        payload: { newComment, commentNumber, tweetNumber, commentsListID },
-      });
+      if (tweetUserUID === state.user.userUID) {
+        dispatch({
+          type: POST_COMMENT,
+          payload: { newComment, commentNumber, tweetNumber, commentsListID },
+        });
+      } else {
+        dispatch({
+          type: POST_COMMENT,
+          payload: {
+            newComment,
+            commentNumber,
+            tweetNumber: `${tweetUserUID}-${tweetNumber}`,
+            commentsListID,
+          },
+        });
+      }
     } catch (err) {
       console.error(err);
     }

@@ -60,6 +60,16 @@ export const toTitleCase = (text) => {
   return newText;
 };
 
+export const sortObj = (obj) => {
+  let sortedList = [];
+  for (let item in obj) {
+    if (!obj[item].number) {
+      sortedList.push([item, obj[item]]);
+    }
+  }
+  return sortedList.sort((a, b) => b[1].date - a[1].date);
+};
+
 export const saveSession = (state) => {
   window.sessionStorage.setItem("loggin", JSON.stringify(state));
 };
