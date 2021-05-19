@@ -7,6 +7,7 @@ import "./assets/styles/globals.style.scss";
 import Home from "./pages/home/Home.page";
 import Login from "./pages/login/Login.page";
 import Follow from "./pages/follow/Follow.page";
+import Explore from "./pages/explore/Explore.page";
 import Comment from "./pages/comment/Comment.page";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               path={`/user/:userUID/tweet/:tweetID`}
               component={Comment}
             ></Route>
+            <Route path="/explore" component={Explore}></Route>
             <Route path="/:follow" component={Follow}></Route>
           </Switch>
         </>

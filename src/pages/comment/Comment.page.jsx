@@ -30,7 +30,7 @@ const Comment = () => {
         {userUID === user.userUID ? (
           <Tweet tweet={tweets[tweetID.split("-")[1]]}></Tweet>
         ) : (
-          <Tweet tweet={tweets[tweetID]}></Tweet>
+          tweets[tweetID] && <Tweet tweet={tweets[tweetID]}></Tweet>
         )}
         <TextBox
           placeholder={"Leave a comment..."}

@@ -1,0 +1,32 @@
+@import "../../assets/styles/variables.style.scss";
+
+.search-bar {
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid $secondary-color-dark;
+
+  &__input {
+    flex-grow: 1;
+
+    background-color: transparent;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__button {
+    flex-shrink: 0;
+
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      i {
+        color: $primary-color;
+      }
+    }
+  }
+}

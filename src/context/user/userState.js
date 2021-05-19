@@ -199,10 +199,29 @@ const UserState = (props) => {
     }
   };
 
+  // explore users
+  const exploreUsers = async () => {
+    try {
+      const exploreUsersRef = await db.collection("users").get();
+
+      let exploreObj = {};
+
+      exploreUsersRef.docs.map((doc) => {
+        const exploreDocData = doc.data();
+        exploreObj[`${exploreDocData.userUID}`] = exploreDocData;
+        return null;
+      });
+
+      return Object.keys(exploreObj);
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+  };
+
   // get user tweets
   const getUserTweets = async (userUID) => {
     try {
-      const tweetsDoc = await db
+      const tweetsRef = await db
         .collection("users")
         .doc(userUID)
         .collection("tweets")
@@ -210,7 +229,7 @@ const UserState = (props) => {
 
       let tweetsObj = {};
 
-      tweetsDoc.docs.map((doc) => {
+      tweetsRef.docs.map((doc) => {
         const docData = doc.data();
 
         if (docData.number >= 0) {
@@ -232,12 +251,12 @@ const UserState = (props) => {
   // get follow tweets
   const getFollowTweets = async (userFollowUID) => {
     try {
-      let followTweetsDoc = null;
+      let followTweetsRef = null;
       let followTweetsObj = {};
       let newTweetID = "";
 
       state.following.followingList.map(async (userFollowUID) => {
-        followTweetsDoc = await db
+        followTweetsRef = await db
           .collection("users")
           .doc(userFollowUID)
           .collection("tweets")
@@ -245,7 +264,7 @@ const UserState = (props) => {
 
         followTweetsObj = {};
 
-        followTweetsDoc.docs.map((doc) => {
+        followTweetsRef.docs.map((doc) => {
           const followDocData = doc.data();
 
           if (!followDocData.number) {
@@ -259,9 +278,9 @@ const UserState = (props) => {
         });
 
         dispatch({ type: GET_FOLLOW_TWEETS, payload: followTweetsObj });
+        dispatch({ type: SAVE_SESSION });
         return null;
       });
-      dispatch({ type: SAVE_SESSION });
     } catch (err) {
       console.error(err);
     }
@@ -640,6 +659,7 @@ const UserState = (props) => {
         getFollowTweets,
         getTweetComments,
         getFollowInfo,
+        exploreUsers,
         postTweet,
         commentTweet,
         likeTweet,
