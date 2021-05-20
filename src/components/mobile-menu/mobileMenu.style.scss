@@ -1,0 +1,43 @@
+@import "../../assets/styles/variables.style.scss";
+@import "../../assets/styles/mixins.style.scss";
+
+.mobile-menu {
+  display: none;
+  width: 25px;
+
+  &__burg {
+    cursor: pointer;
+
+    span {
+      background-color: $white;
+      display: block;
+      width: 100%;
+      height: 3px;
+      margin: 3px 0;
+    }
+
+    &:hover {
+      span {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  &__items {
+    position: absolute;
+    right: 0;
+    transform: translateX(100%);
+
+    background-color: $black;
+
+    transition: transform 0.25s ease-in-out;
+  }
+
+  @include bp-mobile {
+    display: block;
+  }
+}
+
+.mobile-menu__active {
+  transform: translateX(0%);
+}

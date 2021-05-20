@@ -6,7 +6,7 @@ import NewsCard from "../news-card/NewsCard.component";
 const ExtraContent = () => {
   return (
     <div className="extra-content">
-      <SideCard>
+      <SideCard title="You might like">
         <FollowCard
           userName={"Luiz Gustavo"}
           login={"LGPossatto@gmail.com"}
@@ -23,10 +23,24 @@ const ExtraContent = () => {
           userUID={"123"}
         ></FollowCard>
       </SideCard>
-      <SideCard>
-        <NewsCard img></NewsCard>
-        <NewsCard></NewsCard>
-        <NewsCard img></NewsCard>
+      <SideCard title="More info Here">
+        <NewsCard
+          img
+          title="My Portfolio"
+          subtitle="Visit my portfolio"
+          url="#!"
+        ></NewsCard>
+        <NewsCard
+          title="My GitHub"
+          subtitle="Visit my GitHub"
+          url="#!"
+        ></NewsCard>
+        <NewsCard
+          img
+          title="News Site"
+          subtitle="Other project"
+          url="#!"
+        ></NewsCard>
       </SideCard>
     </div>
   );

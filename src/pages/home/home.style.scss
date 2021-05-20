@@ -5,8 +5,13 @@
   .menu-box {
     @include bp-small {
       display: flex;
-      flex-grow: 1;
       justify-content: right;
+    }
+  }
+
+  .main-box {
+    @include bp-tablet {
+      flex-grow: 2;
     }
   }
 

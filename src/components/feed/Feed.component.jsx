@@ -8,6 +8,7 @@ import FeedHead from "../feed-head/FeedHead.component";
 import FeedMenuItem from "../feed-menu-item/FeedMenuItem.component";
 import Tweet from "../tweet/Tweet.component";
 import TextBox from "../text-box/TextBox.component";
+import MobileMenu from "../mobile-menu/MobileMenu.component";
 
 const Feed = () => {
   const {
@@ -40,15 +41,16 @@ const Feed = () => {
     <div className="feed">
       {user && followers && following ? (
         <>
-          <h2 className="feed__title fs-big flex jc-sb ai-c">
-            Home{" "}
+          <div className="feed__title fs-big flex jc-sb ai-c">
+            <h2 className="fs-big">Home</h2>
             <button
               className="logout-btn fs-small fc-primary"
               onClick={logoutUser}
             >
               Logout
             </button>
-          </h2>
+            <MobileMenu></MobileMenu>
+          </div>
           <FeedHead
             user={user}
             followers={followers}

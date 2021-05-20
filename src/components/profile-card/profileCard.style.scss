@@ -23,9 +23,16 @@
   }
 
   &__info {
+    overflow: hidden;
     flex-grow: 1;
 
     margin-left: 12px;
+
+    & > :first-child {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     .bio {
       margin: 12px 0;

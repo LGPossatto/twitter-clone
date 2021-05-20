@@ -1,19 +1,19 @@
 import "./newsCard.style.scss";
 import headImg from "../../assets/images/twiter-profile.jpg";
 
-const NewsCard = ({ img }) => {
+const NewsCard = ({ img, title, url, subtitle }) => {
   return (
-    <div className="news-card flex jc-sb ai-c">
+    <a href={url} className="news-card flex jc-sb ai-c" target="_blanc">
       <div className="info-box">
-        <span className="fs-small fc-secondary">Nome - Time</span>
-        <h2 className="fs-med">News Tittle</h2>
+        <span className="fs-small fc-secondary">{subtitle}</span>
+        <h2 className="fs-med">{title}</h2>
       </div>
       {img && (
         <div className="img-box">
           <img src={headImg} alt="about" />
         </div>
       )}
-    </div>
+    </a>
   );
 };
 

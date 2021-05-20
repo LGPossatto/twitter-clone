@@ -2,10 +2,10 @@ import React from "react";
 
 import "./sideCard.style.scss";
 
-const SideCard = ({ children }) => {
+const SideCard = ({ children, title }) => {
   return (
     <div className="side-card">
-      <h2 className="fs-big">You might like</h2>
+      <h2 className="fs-big">{title}</h2>
       {children}
     </div>
   );

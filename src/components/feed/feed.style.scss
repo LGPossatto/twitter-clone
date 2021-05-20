@@ -21,6 +21,19 @@
         text-decoration: underline;
       }
     }
+
+    @include bp-mobile {
+      justify-content: right;
+
+      & > h2 {
+        position: absolute;
+        left: 12px;
+      }
+
+      .logout-btn {
+        margin-right: 12px;
+      }
+    }
   }
 
   @include bp-tablet {

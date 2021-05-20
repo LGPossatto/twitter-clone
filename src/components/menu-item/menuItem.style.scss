@@ -11,6 +11,10 @@
     @include bp-med {
       display: none;
     }
+
+    @include bp-mobile {
+      display: block;
+    }
   }
 
   &:hover {

@@ -8,7 +8,7 @@ const Home = () => {
       <div className="menu-box">
         <MenuBar></MenuBar>
       </div>
-      <div>
+      <div className="main-box">
         <Main></Main>
         <div className="footer fs-small fc-secondary">
           Twitter Clone by{" "}
