@@ -8,13 +8,8 @@ import profileImg from "../../assets/images/twiter-profile.jpg";
 import Btn from "../btn/Btn.component";
 
 const ProfileCard = ({ userUID }) => {
-  const {
-    following,
-    followUser,
-    unfollowUser,
-    user,
-    getFollowInfo,
-  } = useContext(UserContext);
+  const { following, followUser, unfollowUser, user, getFollowInfo } =
+    useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followInfo, setFollowInfo] = useState(null);
 

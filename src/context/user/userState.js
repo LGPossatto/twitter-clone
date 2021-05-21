@@ -218,6 +218,28 @@ const UserState = (props) => {
     }
   };
 
+  // explore specific users
+  const exploreSpecificUsers = async (search) => {
+    try {
+      const exploreSpecifcUsersRef = await db
+        .collection("users")
+        .where("name", "==", search)
+        .get();
+
+      let exploreSpecifcObj = {};
+
+      exploreSpecifcUsersRef.docs.map((doc) => {
+        const exploreDocData = doc.data();
+        exploreSpecifcObj[`${exploreDocData.userUID}`] = exploreDocData;
+        return null;
+      });
+
+      return Object.keys(exploreSpecifcObj);
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+  };
+
   // get user tweets
   const getUserTweets = async (userUID) => {
     try {
@@ -660,6 +682,7 @@ const UserState = (props) => {
         getTweetComments,
         getFollowInfo,
         exploreUsers,
+        exploreSpecificUsers,
         postTweet,
         commentTweet,
         likeTweet,
