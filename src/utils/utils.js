@@ -39,6 +39,52 @@ export const leapYear = (year) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
+export const verifyDate = (day, month, year) => {
+  day = parseInt(day);
+  month = parseInt(month);
+  year = parseInt(year);
+
+  if (
+    (month === 1 ||
+      month === 3 ||
+      month === 5 ||
+      month === 7 ||
+      month === 8 ||
+      month === 10 ||
+      month === 12) &&
+    day > 0 &&
+    day <= 31 &&
+    year > 1900 &&
+    year <= new Date().getFullYear()
+  ) {
+    return true;
+  } else if (
+    (month === 4 || month === 6 || month === 9 || month === 11) &&
+    day > 0 &&
+    day <= 30 &&
+    year > 1900 &&
+    year <= new Date().getFullYear()
+  ) {
+    return true;
+  } else if (month === 2) {
+    let maxDay = 28;
+    if (leapYear(year)) {
+      maxDay++;
+    }
+
+    if (
+      day > 0 &&
+      day <= maxDay &&
+      year > 1900 &&
+      year <= new Date().getFullYear()
+    ) {
+      return true;
+    }
+  } else {
+    return false;
+  }
+};
+
 export const toTitleCase = (text) => {
   let newText = "";
   const newTextList = text.split(" ");

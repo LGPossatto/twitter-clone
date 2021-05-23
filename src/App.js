@@ -9,6 +9,7 @@ import Login from "./pages/login/Login.page";
 import Follow from "./pages/follow/Follow.page";
 import Explore from "./pages/explore/Explore.page";
 import Comment from "./pages/comment/Comment.page";
+import ProfileEdit from "./pages/profile-edit/ProfileEdit.page";
 
 function App() {
   const { user, followers, following } = useContext(UserContext);
@@ -24,6 +25,7 @@ function App() {
               component={Comment}
             ></Route>
             <Route path="/explore" component={Explore}></Route>
+            <Route path="/profile-edit" component={ProfileEdit}></Route>
             <Route path="/:follow" component={Follow}></Route>
           </Switch>
         </>

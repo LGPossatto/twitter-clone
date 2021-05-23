@@ -30,6 +30,13 @@ const LoginInput = ({
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClick);
+
+    if (inputRef.current.value === "") {
+      setActive(false);
+    } else {
+      setActive(true);
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
@@ -56,6 +63,8 @@ const LoginInput = ({
         type={type}
         value={state}
         ref={inputRef}
+        required
+        onFocus={() => setActive(true)}
         onChange={(e) => {
           if (state.length < charLimit) {
             setState(e.target.value);

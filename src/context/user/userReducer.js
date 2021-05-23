@@ -2,6 +2,7 @@ import {
   SAVE_SESSION,
   USER_LOGOUT,
   GET_USER_PROFILE_INFO,
+  EDIT_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
@@ -36,6 +37,19 @@ const userReducer = (state, action) => {
         comments: null,
       };
     case GET_USER_PROFILE_INFO:
+      return {
+        ...state,
+        user: {
+          userUID: action.payload.userUID,
+          name: action.payload.name,
+          email: action.payload.email,
+          bio: action.payload.bio,
+          birthday: action.payload.birthday,
+          location: action.payload.location,
+          accountBd: action.payload.accountBd,
+        },
+      };
+    case EDIT_USER_PROFILE_INFO:
       return {
         ...state,
         user: {

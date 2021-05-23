@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { getMonthAndDay } from "../../utils/utils";
@@ -14,6 +15,12 @@ const FeedHead = ({
   followers: { followerList },
   following: { followingList },
 }) => {
+  const history = useHistory();
+
+  const openEditPage = () => {
+    history.push("/profile-edit");
+  };
+
   return (
     <div className="feed-head">
       <div className="head-img">
@@ -23,7 +30,7 @@ const FeedHead = ({
         <div className="profile__img">
           <img src={profileImg} alt="profile" />
         </div>
-        <Btn text="Edit" no_bg small></Btn>
+        <Btn text="Edit" onClick={openEditPage} no_bg small></Btn>
         <div className="profile__info">
           <h2 className="fs-big">{name}</h2>
           <span className="fs-med fc-secondary">{email}</span>

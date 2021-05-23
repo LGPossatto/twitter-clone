@@ -8,6 +8,7 @@ import {
   SAVE_SESSION,
   USER_LOGOUT,
   GET_USER_PROFILE_INFO,
+  EDIT_USER_PROFILE_INFO,
   GET_USER_FOLLOWERS,
   GET_USER_FOLLOWING,
   GET_USER_TWEETS,
@@ -175,6 +176,31 @@ const UserState = (props) => {
     }
   };
 
+  const editUserInfo = async (
+    editUserName,
+    editUserBio,
+    editUserCity,
+    editUserBd
+  ) => {
+    const editProfileObj = {
+      userUID: state.user.userUID,
+      name: editUserName,
+      email: state.user.email,
+      bio: editUserBio,
+      birthday: editUserBd,
+      location: editUserCity,
+      accountBd: state.user.accountBd,
+    };
+
+    try {
+      await db.collection("users").doc(state.user.userUID).set(editProfileObj);
+
+      dispatch({ type: EDIT_USER_PROFILE_INFO, payload: editProfileObj });
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+  };
+
   // get follow info
   const getFollowInfo = async (userUID) => {
     try {
@@ -219,11 +245,11 @@ const UserState = (props) => {
   };
 
   // explore specific users
-  const exploreSpecificUsers = async (search) => {
+  const exploreSpecificUsers = async (searchLogin) => {
     try {
       const exploreSpecifcUsersRef = await db
         .collection("users")
-        .where("name", "==", search)
+        .where("email", "==", searchLogin)
         .get();
 
       let exploreSpecifcObj = {};
@@ -680,8 +706,9 @@ const UserState = (props) => {
         getUserTweets,
         getFollowTweets,
         getTweetComments,
-        getFollowInfo,
         exploreUsers,
+        editUserInfo,
+        getFollowInfo,
         exploreSpecificUsers,
         postTweet,
         commentTweet,

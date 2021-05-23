@@ -12,7 +12,7 @@ const SearchBar = ({ searchValue, setSearchValue, onClick }) => {
         type="text"
         name="searchText"
         id="searchText"
-        placeholder="Search for someone..."
+        placeholder="Search specific email..."
       />
       <button className="search-bar__button" onClick={onClick}>
         <i className="fas fa-search fs-med"></i>
