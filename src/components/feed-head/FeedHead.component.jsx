@@ -50,7 +50,7 @@ const FeedHead = ({
               text="Following"
             ></FollowNumberLink>
             <FollowNumberLink
-              url="#!"
+              url="followers"
               number={followerList.length}
               text="Followers"
             ></FollowNumberLink>

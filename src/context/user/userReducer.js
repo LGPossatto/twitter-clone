@@ -82,8 +82,6 @@ const userReducer = (state, action) => {
         },
       };
     case POST_COMMENT:
-      console.log(action.payload.tweetNumber, action.payload.commentsListID);
-      console.log(state.tweets[`${action.payload.tweetNumber}`]);
       return {
         ...state,
         tweets: {
@@ -222,6 +220,14 @@ const userReducer = (state, action) => {
       const newFollowingList = state.following.followingList.filter(
         (item) => item !== action.payload
       );
+      const newTweetKeys = Object.keys(state.tweets).filter(
+        (key) => key.split("-")[0] !== action.payload
+      );
+      let newRemovedTweets = {};
+
+      for (let key of newTweetKeys) {
+        newRemovedTweets[key] = state.tweets[key];
+      }
 
       return {
         ...state,
@@ -229,6 +235,7 @@ const userReducer = (state, action) => {
           ...state.following,
           followingList: [...newFollowingList],
         },
+        tweets: newRemovedTweets,
       };
     default:
       return state;

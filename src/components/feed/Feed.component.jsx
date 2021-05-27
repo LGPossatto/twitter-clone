@@ -27,15 +27,20 @@ const Feed = () => {
     setActive(true);
   };
 
-  const setTweetActive = () => {
+  /* const setTweetActive = () => {
     setActive(false);
-  };
+  }; */
 
   useEffect(() => {
     getUserTweets(user.userUID);
     getFollowTweets();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    getFollowTweets();
+    // eslint-disable-next-line
+  }, [following]);
 
   return (
     <div className="feed">
@@ -62,11 +67,6 @@ const Feed = () => {
               active={active}
               setActive={setFeedActive}
             ></FeedMenuItem>
-            <FeedMenuItem
-              text="Tweets"
-              active={!active}
-              setActive={setTweetActive}
-            ></FeedMenuItem>
           </div>
           <TextBox
             placeholder={"What is happening..."}
@@ -78,7 +78,11 @@ const Feed = () => {
       ) : null}
       {tweets &&
         sortObj(tweets).map((tweet) => {
-          return <Tweet key={tweet[1].tweetID} tweet={tweet[1]}></Tweet>;
+          if (Number.isInteger(tweet[1].number)) {
+            return null;
+          } else {
+            return <Tweet key={tweet[1].tweetID} tweet={tweet[1]}></Tweet>;
+          }
         })}
     </div>
   );

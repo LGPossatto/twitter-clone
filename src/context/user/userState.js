@@ -61,6 +61,7 @@ const UserState = (props) => {
       getUserInfo(userCredential.user.uid);
     } catch (err) {
       console.error(err);
+      alert(err.message);
     }
   };
 
@@ -297,7 +298,7 @@ const UserState = (props) => {
   };
 
   // get follow tweets
-  const getFollowTweets = async (userFollowUID) => {
+  const getFollowTweets = async () => {
     try {
       let followTweetsRef = null;
       let followTweetsObj = {};
