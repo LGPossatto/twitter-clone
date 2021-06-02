@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import { verifyDate } from "../../utils/utils";
 import UserContext from "../../context/user/userContext";
@@ -10,6 +11,7 @@ import Btn from "../../components/btn/Btn.component";
 
 const ProfileEdit = () => {
   const { user, editUserInfo } = useContext(UserContext);
+  const history = useHistory();
 
   const [editUserName, setEditUserName] = useState(user.name);
   const [editUserBio, setEditUserBio] = useState(user.bio);
@@ -35,7 +37,6 @@ const ProfileEdit = () => {
     ) {
       alert("Please, leave no box empty.");
     } else if (!verifyDate(editUserBdDay, editUserBdMonth, editUserBdYear)) {
-      console.log(editUserBdDay, editUserBdMonth, editUserBdYear);
       alert("Something is wrong with your birthday.");
     } else {
       editUserInfo(
@@ -44,6 +45,7 @@ const ProfileEdit = () => {
         editUserCity,
         `${editUserBdDay}/${editUserBdMonth}/${editUserBdYear}`
       );
+      history.push("/");
     }
   };
 
